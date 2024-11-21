@@ -19,13 +19,15 @@ Airflow를 사용하여 Keypoint detection 파이프라인을 자동화하는 �
 
 ### 1. 데이터셋 생성
 
-`make_dataset2.py` 파일은 annotation tool인 **labelme** 로 라벨링을 진행한 JSON 파일과 이미지 쌍 데이터를 COCO 스타일의 데이터셋을 생성
+`make_dataset2.py` 
+
+파일은 annotation tool인 **labelme** 로 라벨링을 진행한 JSON 파일과 이미지 쌍 데이터를 COCO 스타일의 데이터셋으로 생성
 ![스크린샷 2024-11-21 오후 3 59 54](https://github.com/user-attachments/assets/6f6d529c-cc3d-495b-b3eb-fa2e6161c76f)
 
 #### 사용법
 
 
-```python
+```bash
 python make_dataset2.py -d <data_dir> -ext <img_ext> -n <num_points> -sc <supercategory> -c <category> -tp <train_per>
 ```
 
@@ -41,11 +43,13 @@ python make_dataset2.py -d <data_dir> -ext <img_ext> -n <num_points> -sc <superc
 
 ### 2. 실험 설정
 
-`make_experiments.py` 파일은 train을 위한 실험 설정 파일을 업데이트
+`make_experiments.py`
+
+**학습을 위한 실험 설정 파일을 업데이트**
 
 #### 사용법
 
-```python
+```bash
 python make_experiments.py --num-keypoints <num_keypoints> --flip-fairs <flip_fairs> --data-format <data_format> --data-root <data_root> --begin-epoch <begin_epoch> --end-epoch <end_epoch> --config-file <config_file> --output-file <output_file>
 ```
 
@@ -60,7 +64,9 @@ python make_experiments.py --num-keypoints <num_keypoints> --flip-fairs <flip_fa
 
 ### 3. 모델 훈련
 
-`train/main/train.py` 스크립트는 모델을 훈련합니다.
+`train/main/train.py` 
+
+**모델 훈련 진행**
 
 #### 사용법
 ```python
