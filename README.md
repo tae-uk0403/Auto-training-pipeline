@@ -19,36 +19,37 @@ Airflow를 사용하여 Keypoint detection 파이프라인을 자동화하는 �
 #### 사용법
 
 
-```bash
+```python
 python make_dataset2.py -d <data_dir> -ext <img_ext> -n <num_points> -sc <supercategory> -c <category> -tp <train_per>
 ```
 
 
-- `-d`, `--data_dir`: 데이터 디렉토리의 절대 경로
+- `-d`, `--data_dir`: 데이터 디렉토리 경로
 - `-ext`, `--img_ext`: 이미지 파일 확장자 (예: jpg, png)
-- `-n`, `--num_points`: 키포인트의 수
-- `-sc`, `--supercategory`: 슈퍼카테고리
-- `-c`, `--category`: 카테고리
-- `-tp`, `--train_per`: 훈련 데이터 비율 (예: 0.8)
+- `-n`, `--num_points`: 카테고리 키포인트의 수
+- `-sc`, `--supercategory`: 상위 카테고리 (ex : 신체)
+- `-c`, `--category`: 카테고리 (ex : 허리)
+- `-tp`, `--train_per`: Train Validation 데이터 비율 (예: 0.8)
 
 
 
 ### 2. 실험 설정
 
-`make_experiments.py` 스크립트는 실험 설정 파일을 업데이트합니다.
+`make_experiments.py` 파일은 train을 위한 실험 설정 파일을 업데이트
 
 #### 사용법
-bash
+
+```python
 python make_experiments.py --num-keypoints <num_keypoints> --flip-fairs <flip_fairs> --data-format <data_format> --data-root <data_root> --begin-epoch <begin_epoch> --end-epoch <end_epoch> --config-file <config_file> --output-file <output_file>
+```
 
-
-- `--num-keypoints`: 키포인트의 수
-- `--flip-fairs`: 플립 페어 옵션 (리스트 형태의 문자열)
+- `--num-keypoints`: 카테고리 키포인트의 수
+- `--flip-fairs`: 키포인트 좌우 대칭 리스트 (ex : [[1,2],[3,4]])
 - `--data-format`: 데이터 형식
-- `--data-root`: 데이터 루트 경로
-- `--begin-epoch`: 시작 에포크
-- `--end-epoch`: 종료 에포크
-- `--config-file`: 원본 설정 파일 경로
+- `--data-root`: 데이터 경로
+- `--begin-epoch`: 시작 epoch
+- `--end-epoch`: 종료 epoch
+- `--config-file`: 기존 설정 파일 경로
 - `--output-file`: 업데이트된 설정 파일 저장 경로
 
 ### 3. 모델 훈련
@@ -56,16 +57,10 @@ python make_experiments.py --num-keypoints <num_keypoints> --flip-fairs <flip_fa
 `train/main/train.py` 스크립트는 모델을 훈련합니다.
 
 #### 사용법
-bash
+```python
 python train/main/train.py --cfg <config_file> MODEL.PRETRAINED <pretrained_model>
+```
 
 - `--cfg`: 실험 설정 파일 경로
 - `MODEL.PRETRAINED`: 사전 훈련된 모델 경로
 
-### 4. Airflow 파이프라인 실행
-
-`train_pipeline.py` 파일은 Airflow DAG을 정의합니다. 이 파일을 통해 전체 파이프라인을 실행할 수 있습니다.
-
-#### 사용법
-
-Airflow 웹 UI 또는 CLI를 통해 DAG을 실행합니다.
