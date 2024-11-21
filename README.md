@@ -17,8 +17,13 @@ Airflow를 사용하여 Keypoint detection 파이프라인을 자동화하는 �
 `make_dataset2.py` 파일은 **labelme** tool로 라벨링을 진행한 JSON 파일과 이미지 쌍 데이터를 COCO 스타일의 데이터셋을 생성
 
 #### 사용법
-bash
+
+
+```bash
 python make_dataset2.py -d <data_dir> -ext <img_ext> -n <num_points> -sc <supercategory> -c <category> -tp <train_per>
+```
+
+
 - `-d`, `--data_dir`: 데이터 디렉토리의 절대 경로
 - `-ext`, `--img_ext`: 이미지 파일 확장자 (예: jpg, png)
 - `-n`, `--num_points`: 키포인트의 수
