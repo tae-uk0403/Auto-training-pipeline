@@ -1,4 +1,5 @@
 # Airflow Keypoint Pipeline
+![스크린샷 2024-11-21 오후 3 58 15](https://github.com/user-attachments/assets/37f79603-4e90-418f-b81c-190220e29221)
 
 Airflow를 사용하여 Keypoint detection 파이프라인을 자동화하는 프로젝트입니다. 이 파이프라인은 데이터셋 생성, 실험 설정, 모델 훈련 단계로 구성되어 있습니다.
 
@@ -14,7 +15,8 @@ Airflow를 사용하여 Keypoint detection 파이프라인을 자동화하는 �
 
 ### 1. 데이터셋 생성
 
-`make_dataset2.py` 파일은 **labelme** tool로 라벨링을 진행한 JSON 파일과 이미지 쌍 데이터를 COCO 스타일의 데이터셋을 생성
+`make_dataset2.py` 파일은 annotation tool인 **labelme** 로 라벨링을 진행한 JSON 파일과 이미지 쌍 데이터를 COCO 스타일의 데이터셋을 생성
+![스크린샷 2024-11-21 오후 3 59 54](https://github.com/user-attachments/assets/6f6d529c-cc3d-495b-b3eb-fa2e6161c76f)
 
 #### 사용법
 
