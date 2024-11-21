@@ -1,0 +1,929 @@
+2024-11-21 09:57:13,091 Namespace(cfg='experiments/Auto/hrnet/w48_384x288_adam_lr1e-3_front.yaml', dataDir='', logDir='', modelDir='', opts=['MODEL.PRETRAINED', 'models/pose_hrnet-w48_384x288-deepfashion2_mAP_0.7017.pth'], prevModelDir='')
+2024-11-21 09:57:13,092 AUTO_RESUME: False
+CUDNN:
+  BENCHMARK: True
+  DETERMINISTIC: False
+  ENABLED: True
+DATASET:
+  COLOR_RGB: True
+  DATASET: Auto
+  DATA_FORMAT: png
+  FLIP: False
+  FLIP_FAIRS: [[1, 2], [3, 5], [4, 6], [7, 8], [9, 10], [10, 11], [11, 12], [13, 14], [15, 18], [16, 17], [19, 22], [20, 21]]
+  HYBRID_JOINTS_TYPE: 
+  MINI_DATASET: False
+  NUM_JOINTS_HALF_BODY: 8
+  NUM_KEPOINTS: 22
+  PROB_HALF_BODY: 0.3
+  ROOT: data/front/
+  ROT_FACTOR: 15
+  SCALE_FACTOR: 0.1
+  SELECT_CAT: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+  SELECT_DATA: False
+  TEST_SET: validation
+  TRAIN_SET: train
+DATA_DIR: 
+DEBUG:
+  DEBUG: True
+  SAVE_BATCH_IMAGES_GT: False
+  SAVE_BATCH_IMAGES_GT_PRED: True
+  SAVE_BATCH_IMAGES_PRED: False
+  SAVE_HEATMAPS_GT: True
+  SAVE_HEATMAPS_PRED: True
+GPUS: (1,)
+LOG_DIR: log
+LOSS:
+  TOPK: 8
+  USE_DIFFERENT_JOINTS_WEIGHT: False
+  USE_OHKM: False
+  USE_TARGET_WEIGHT: True
+MODEL:
+  EXTRA:
+    FINAL_CONV_KERNEL: 1
+    PRETRAINED_LAYERS: ['conv1', 'bn1', 'conv2', 'bn2', 'layer1', 'transition1', 'stage2', 'transition2', 'stage3', 'transition3', 'stage4']
+    STAGE2:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4]
+      NUM_BRANCHES: 2
+      NUM_CHANNELS: [48, 96]
+      NUM_MODULES: 1
+    STAGE3:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4]
+      NUM_BRANCHES: 3
+      NUM_CHANNELS: [48, 96, 192]
+      NUM_MODULES: 4
+    STAGE4:
+      BLOCK: BASIC
+      FUSE_METHOD: SUM
+      NUM_BLOCKS: [4, 4, 4, 4]
+      NUM_BRANCHES: 4
+      NUM_CHANNELS: [48, 96, 192, 384]
+      NUM_MODULES: 3
+  GCN_INPUT_FEATURE_DIM: 48
+  GCN_NODE_FEATURE_DIM: 256
+  GCN_NUM_LAYERS: 3
+  GCN_NUM_NODES: 294
+  HEATMAP_SIZE: [72, 96]
+  IMAGE_SIZE: [288, 384]
+  INIT_WEIGHTS: True
+  NAME: pose_hrnet
+  NUM_JOINTS: 294
+  PRETRAINED: models/pose_hrnet-w48_384x288-deepfashion2_mAP_0.7017.pth
+  SIGMA: 2
+  TAG_PER_JOINT: True
+  TARGET_TYPE: gaussian
+OUTPUT_DIR: output
+PIN_MEMORY: True
+PRINT_FREQ: 20
+RANK: 0
+TAG: 
+TEST:
+  BATCH_SIZE_PER_GPU: 4
+  BBOX_THRE: 0.1
+  COCO_BBOX_FILE: 
+  DEEPFASHION2_BBOX_FILE: 
+  FLIP_TEST: False
+  IMAGE_THRE: 0.1
+  IN_VIS_THRE: 0.2
+  MODEL_FILE: 
+  NMS_THRE: 1.0
+  OKS_THRE: 0.9
+  POST_PROCESS: True
+  SHIFT_HEATMAP: True
+  SOFT_NMS: False
+  USE_GT_BBOX: True
+TRAIN:
+  BATCH_SIZE_PER_GPU: 4
+  BEGIN_EPOCH: 0
+  CHECKPOINT: 
+  END_EPOCH: 100
+  GAMMA1: 0.99
+  GAMMA2: 0.0
+  LR: 0.001
+  LR_FACTOR: 0.1
+  LR_STEP: [170, 200]
+  MOMENTUM: 0.9
+  NESTEROV: False
+  OPTIMIZER: adam
+  RESUME: False
+  SHUFFLE: True
+  WD: 0.0
+WORKERS: 4
+2024-11-21 09:57:13,384 Let's use 2 GPUs!
+2024-11-21 09:57:13,706 => init weights from normal distribution
+2024-11-21 09:57:14,162 => loading pretrained model models/pose_hrnet-w48_384x288-deepfashion2_mAP_0.7017.pth
+2024-11-21 09:57:14,282 => classes: ['__background__', 'front', 'long_sleeved_shirt', 'short_sleeved_outwear', 'long_sleeved_outwear', 'vest', 'sling', 'shorts', 'trousers', 'cow', 'short_sleeved_dress', 'long_sleeved_dress', 'vest_dress', 'sling_dress']
+2024-11-21 09:57:14,282 => num_images: 19
+2024-11-21 09:57:14,613 => load 19 samples
+2024-11-21 09:57:14,614 => classes: ['__background__', 'front', 'long_sleeved_shirt', 'short_sleeved_outwear', 'long_sleeved_outwear', 'vest', 'sling', 'shorts', 'trousers', 'cow', 'short_sleeved_dress', 'long_sleeved_dress', 'vest_dress', 'sling_dress']
+2024-11-21 09:57:14,614 => num_images: 9
+2024-11-21 09:57:14,713 => load 9 samples
+2024-11-21 09:57:14,713 Training Data Analysis:
+2024-11-21 09:57:14,713 Class idx  |     0 |     1 |     2 |     3 |     4 |     5 |     6 |     7 |     8 |     9 |    10 |    11 |    12 |    13 
+2024-11-21 09:57:14,713 Proportion |  0.00 |  1.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 
+2024-11-21 09:57:14,713 Weights    | 50.00 |  0.98 | 50.00 | 50.00 | 50.00 | 50.00 | 50.00 | 50.00 | 50.00 | 50.00 | 50.00 | 50.00 | 50.00 | 50.00 
+2024-11-21 09:57:14,716 => Start training...
+2024-11-21 09:57:16,601 Epoch: [0][0/3]	Time 1.884s (1.884s)	Speed 4.2 samples/s	Data 0.396s (0.396s)	Loss 0.002664 (0.002664)	acc 0.000 (0.000)
+2024-11-21 09:57:19,526 Test: [0/2]	Time 0.677 (0.677)	Loss 0.00184 (0.00184)	acc 0.051 (0.051)
+2024-11-21 09:57:20,885 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:57:20,900 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:57:20,900 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:57:20,900 | pose_hrnet | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 |
+2024-11-21 09:57:20,900 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:57:23,207 # Best AP 0.0
+2024-11-21 09:57:24,058 Epoch: [1][0/3]	Time 0.846s (0.846s)	Speed 9.5 samples/s	Data 0.367s (0.367s)	Loss 0.001835 (0.001835)	acc 0.040 (0.040)
+2024-11-21 09:57:26,831 Test: [0/2]	Time 0.702 (0.702)	Loss 0.00181 (0.00181)	acc 0.085 (0.085)
+2024-11-21 09:57:28,028 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:57:28,046 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:57:28,046 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:57:28,046 | pose_hrnet | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 |
+2024-11-21 09:57:28,046 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:57:30,374 # Best AP 0.0
+2024-11-21 09:57:31,202 Epoch: [2][0/3]	Time 0.824s (0.824s)	Speed 9.7 samples/s	Data 0.358s (0.358s)	Loss 0.001792 (0.001792)	acc 0.057 (0.057)
+2024-11-21 09:57:34,097 Test: [0/2]	Time 0.667 (0.667)	Loss 0.00177 (0.00177)	acc 0.091 (0.091)
+2024-11-21 09:57:35,283 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:57:35,301 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:57:35,301 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:57:35,301 | pose_hrnet | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 |
+2024-11-21 09:57:35,301 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:57:37,747 # Best AP 0.0
+2024-11-21 09:57:38,626 Epoch: [3][0/3]	Time 0.874s (0.874s)	Speed 9.2 samples/s	Data 0.372s (0.372s)	Loss 0.001772 (0.001772)	acc 0.102 (0.102)
+2024-11-21 09:57:41,533 Test: [0/2]	Time 0.683 (0.683)	Loss 0.00176 (0.00176)	acc 0.108 (0.108)
+2024-11-21 09:57:42,757 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:57:42,776 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:57:42,776 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:57:42,776 | pose_hrnet | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 |
+2024-11-21 09:57:42,776 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:57:45,232 # Best AP 0.0
+2024-11-21 09:57:46,121 Epoch: [4][0/3]	Time 0.884s (0.884s)	Speed 9.1 samples/s	Data 0.374s (0.374s)	Loss 0.001744 (0.001744)	acc 0.176 (0.176)
+2024-11-21 09:57:48,930 Test: [0/2]	Time 0.703 (0.703)	Loss 0.00174 (0.00174)	acc 0.153 (0.153)
+2024-11-21 09:57:50,145 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:57:50,164 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:57:50,164 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:57:50,164 | pose_hrnet | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 |
+2024-11-21 09:57:50,164 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:57:52,704 # Best AP 0.0
+2024-11-21 09:57:53,578 Epoch: [5][0/3]	Time 0.870s (0.870s)	Speed 9.2 samples/s	Data 0.371s (0.371s)	Loss 0.001721 (0.001721)	acc 0.199 (0.199)
+2024-11-21 09:57:56,357 Test: [0/2]	Time 0.694 (0.694)	Loss 0.00170 (0.00170)	acc 0.199 (0.199)
+2024-11-21 09:57:57,566 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:57:57,585 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:57:57,585 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:57:57,585 | pose_hrnet | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 |
+2024-11-21 09:57:57,585 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:57:59,914 # Best AP 0.0
+2024-11-21 09:58:00,842 Epoch: [6][0/3]	Time 0.923s (0.923s)	Speed 8.7 samples/s	Data 0.321s (0.321s)	Loss 0.001684 (0.001684)	acc 0.284 (0.284)
+2024-11-21 09:58:03,649 Test: [0/2]	Time 0.713 (0.713)	Loss 0.00165 (0.00165)	acc 0.301 (0.301)
+2024-11-21 09:58:04,857 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:58:04,875 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:58:04,875 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:58:04,875 | pose_hrnet | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 |
+2024-11-21 09:58:04,876 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:58:07,205 # Best AP 0.0
+2024-11-21 09:58:08,101 Epoch: [7][0/3]	Time 0.892s (0.892s)	Speed 9.0 samples/s	Data 0.383s (0.383s)	Loss 0.001635 (0.001635)	acc 0.307 (0.307)
+2024-11-21 09:58:10,999 Test: [0/2]	Time 0.706 (0.706)	Loss 0.00161 (0.00161)	acc 0.335 (0.335)
+2024-11-21 09:58:12,214 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:58:12,232 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:58:12,232 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:58:12,233 | pose_hrnet | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 |
+2024-11-21 09:58:12,233 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:58:14,566 # Best AP 0.0
+2024-11-21 09:58:15,435 Epoch: [8][0/3]	Time 0.864s (0.864s)	Speed 9.3 samples/s	Data 0.363s (0.363s)	Loss 0.001566 (0.001566)	acc 0.335 (0.335)
+2024-11-21 09:58:18,348 Test: [0/2]	Time 0.785 (0.785)	Loss 0.00155 (0.00155)	acc 0.369 (0.369)
+2024-11-21 09:58:19,534 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:58:19,552 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:58:19,552 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:58:19,552 | pose_hrnet | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 |
+2024-11-21 09:58:19,553 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:58:21,875 # Best AP 0.0
+2024-11-21 09:58:22,758 Epoch: [9][0/3]	Time 0.879s (0.879s)	Speed 9.1 samples/s	Data 0.374s (0.374s)	Loss 0.001523 (0.001523)	acc 0.381 (0.381)
+2024-11-21 09:58:25,559 Test: [0/2]	Time 0.707 (0.707)	Loss 0.00147 (0.00147)	acc 0.375 (0.375)
+2024-11-21 09:58:26,736 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:58:26,754 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:58:26,754 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:58:26,754 | pose_hrnet | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | -1.0000 | 0.0000 |
+2024-11-21 09:58:26,754 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:58:29,086 # Best AP 0.0
+2024-11-21 09:58:30,052 Epoch: [10][0/3]	Time 0.962s (0.962s)	Speed 8.3 samples/s	Data 0.387s (0.387s)	Loss 0.001428 (0.001428)	acc 0.375 (0.375)
+2024-11-21 09:58:32,893 Test: [0/2]	Time 0.708 (0.708)	Loss 0.00141 (0.00141)	acc 0.403 (0.403)
+2024-11-21 09:58:34,122 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:58:34,140 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:58:34,140 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:58:34,140 | pose_hrnet | 0.0051 | 0.0506 | 0.0000 | -1.0000 | 0.0051 | 0.0222 | 0.2222 | 0.0000 | -1.0000 | 0.0222 |
+2024-11-21 09:58:34,140 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:58:36,445 # Best AP 0.00506050605060506
+2024-11-21 09:58:37,334 Epoch: [11][0/3]	Time 0.884s (0.884s)	Speed 9.0 samples/s	Data 0.377s (0.377s)	Loss 0.001415 (0.001415)	acc 0.415 (0.415)
+2024-11-21 09:58:40,246 Test: [0/2]	Time 0.698 (0.698)	Loss 0.00135 (0.00135)	acc 0.432 (0.432)
+2024-11-21 09:58:41,468 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:58:41,487 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:58:41,487 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:58:41,487 | pose_hrnet | 0.0067 | 0.0668 | 0.0000 | -1.0000 | 0.0067 | 0.0222 | 0.2222 | 0.0000 | -1.0000 | 0.0222 |
+2024-11-21 09:58:41,487 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:58:43,950 # Best AP 0.006683168316831683
+2024-11-21 09:58:44,837 Epoch: [12][0/3]	Time 0.882s (0.882s)	Speed 9.1 samples/s	Data 0.378s (0.378s)	Loss 0.001339 (0.001339)	acc 0.449 (0.449)
+2024-11-21 09:58:47,629 Test: [0/2]	Time 0.690 (0.690)	Loss 0.00129 (0.00129)	acc 0.455 (0.455)
+2024-11-21 09:58:48,836 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:58:48,855 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:58:48,855 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:58:48,855 | pose_hrnet | 0.0127 | 0.1122 | 0.0000 | -1.0000 | 0.0127 | 0.0444 | 0.3333 | 0.0000 | -1.0000 | 0.0444 |
+2024-11-21 09:58:48,855 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:58:51,391 # Best AP 0.012706270627062704
+2024-11-21 09:58:52,257 Epoch: [13][0/3]	Time 0.862s (0.862s)	Speed 9.3 samples/s	Data 0.380s (0.380s)	Loss 0.001244 (0.001244)	acc 0.443 (0.443)
+2024-11-21 09:58:55,085 Test: [0/2]	Time 0.706 (0.706)	Loss 0.00124 (0.00124)	acc 0.477 (0.477)
+2024-11-21 09:58:56,320 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:58:56,338 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:58:56,338 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:58:56,338 | pose_hrnet | 0.0684 | 0.6271 | 0.0000 | -1.0000 | 0.0684 | 0.1000 | 0.7778 | 0.0000 | -1.0000 | 0.1000 |
+2024-11-21 09:58:56,338 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:58:58,827 # Best AP 0.0683993399339934
+2024-11-21 09:58:59,782 Epoch: [14][0/3]	Time 0.950s (0.950s)	Speed 8.4 samples/s	Data 0.365s (0.365s)	Loss 0.001192 (0.001192)	acc 0.455 (0.455)
+2024-11-21 09:59:02,591 Test: [0/2]	Time 0.711 (0.711)	Loss 0.00118 (0.00118)	acc 0.500 (0.500)
+2024-11-21 09:59:03,806 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:59:03,824 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:59:03,824 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:59:03,824 | pose_hrnet | 0.1112 | 1.0000 | 0.0000 | -1.0000 | 0.1112 | 0.1333 | 1.0000 | 0.0000 | -1.0000 | 0.1333 |
+2024-11-21 09:59:03,824 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:59:06,152 # Best AP 0.11122112211221123
+2024-11-21 09:59:07,031 Epoch: [15][0/3]	Time 0.875s (0.875s)	Speed 9.1 samples/s	Data 0.386s (0.386s)	Loss 0.001135 (0.001135)	acc 0.466 (0.466)
+2024-11-21 09:59:09,858 Test: [0/2]	Time 0.680 (0.680)	Loss 0.00113 (0.00113)	acc 0.545 (0.545)
+2024-11-21 09:59:11,043 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:59:11,062 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:59:11,062 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:59:11,062 | pose_hrnet | 0.1739 | 1.0000 | 0.0000 | -1.0000 | 0.1739 | 0.2111 | 1.0000 | 0.0000 | -1.0000 | 0.2111 |
+2024-11-21 09:59:11,062 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:59:13,403 # Best AP 0.17392739273927393
+2024-11-21 09:59:14,282 Epoch: [16][0/3]	Time 0.875s (0.875s)	Speed 9.1 samples/s	Data 0.379s (0.379s)	Loss 0.001076 (0.001076)	acc 0.500 (0.500)
+2024-11-21 09:59:17,161 Test: [0/2]	Time 0.796 (0.796)	Loss 0.00108 (0.00108)	acc 0.591 (0.591)
+2024-11-21 09:59:18,391 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:59:18,409 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:59:18,409 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:59:18,409 | pose_hrnet | 0.2482 | 1.0000 | 0.0000 | -1.0000 | 0.2482 | 0.2667 | 1.0000 | 0.0000 | -1.0000 | 0.2667 |
+2024-11-21 09:59:18,409 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:59:20,747 # Best AP 0.24818481848184815
+2024-11-21 09:59:21,614 Epoch: [17][0/3]	Time 0.863s (0.863s)	Speed 9.3 samples/s	Data 0.371s (0.371s)	Loss 0.001059 (0.001059)	acc 0.540 (0.540)
+2024-11-21 09:59:24,408 Test: [0/2]	Time 0.698 (0.698)	Loss 0.00104 (0.00104)	acc 0.608 (0.608)
+2024-11-21 09:59:25,633 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:59:25,651 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:59:25,651 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:59:25,651 | pose_hrnet | 0.2919 | 1.0000 | 0.0000 | -1.0000 | 0.2919 | 0.3222 | 1.0000 | 0.0000 | -1.0000 | 0.3222 |
+2024-11-21 09:59:25,652 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:59:27,985 # Best AP 0.2919416941694169
+2024-11-21 09:59:28,967 Epoch: [18][0/3]	Time 0.977s (0.977s)	Speed 8.2 samples/s	Data 0.392s (0.392s)	Loss 0.001024 (0.001024)	acc 0.551 (0.551)
+2024-11-21 09:59:31,772 Test: [0/2]	Time 0.693 (0.693)	Loss 0.00098 (0.00098)	acc 0.665 (0.665)
+2024-11-21 09:59:32,973 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:59:32,992 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:59:32,992 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:59:32,992 | pose_hrnet | 0.3236 | 1.0000 | 0.0000 | -1.0000 | 0.3236 | 0.3556 | 1.0000 | 0.0000 | -1.0000 | 0.3556 |
+2024-11-21 09:59:32,992 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:59:35,333 # Best AP 0.3235973597359736
+2024-11-21 09:59:36,164 Epoch: [19][0/3]	Time 0.826s (0.826s)	Speed 9.7 samples/s	Data 0.351s (0.351s)	Loss 0.000956 (0.000956)	acc 0.619 (0.619)
+2024-11-21 09:59:39,116 Test: [0/2]	Time 0.710 (0.710)	Loss 0.00092 (0.00092)	acc 0.665 (0.665)
+2024-11-21 09:59:40,344 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:59:40,363 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:59:40,363 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:59:40,363 | pose_hrnet | 0.3845 | 1.0000 | 0.0000 | -1.0000 | 0.3845 | 0.3889 | 1.0000 | 0.0000 | -1.0000 | 0.3889 |
+2024-11-21 09:59:40,363 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:59:42,681 # Best AP 0.38448844884488453
+2024-11-21 09:59:43,550 Epoch: [20][0/3]	Time 0.864s (0.864s)	Speed 9.3 samples/s	Data 0.357s (0.357s)	Loss 0.000897 (0.000897)	acc 0.648 (0.648)
+2024-11-21 09:59:46,370 Test: [0/2]	Time 0.703 (0.703)	Loss 0.00087 (0.00087)	acc 0.693 (0.693)
+2024-11-21 09:59:47,588 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:59:47,607 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:59:47,607 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:59:47,607 | pose_hrnet | 0.3960 | 1.0000 | 0.0000 | -1.0000 | 0.3960 | 0.4111 | 1.0000 | 0.0000 | -1.0000 | 0.4111 |
+2024-11-21 09:59:47,607 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:59:50,146 # Best AP 0.396017601760176
+2024-11-21 09:59:51,000 Epoch: [21][0/3]	Time 0.849s (0.849s)	Speed 9.4 samples/s	Data 0.347s (0.347s)	Loss 0.000858 (0.000858)	acc 0.705 (0.705)
+2024-11-21 09:59:53,776 Test: [0/2]	Time 0.689 (0.689)	Loss 0.00083 (0.00083)	acc 0.739 (0.739)
+2024-11-21 09:59:54,988 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 09:59:55,007 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 09:59:55,007 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 09:59:55,007 | pose_hrnet | 0.4500 | 1.0000 | 0.0000 | -1.0000 | 0.4500 | 0.4667 | 1.0000 | 0.0000 | -1.0000 | 0.4667 |
+2024-11-21 09:59:55,007 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 09:59:57,489 # Best AP 0.45
+2024-11-21 09:59:58,437 Epoch: [22][0/3]	Time 0.943s (0.943s)	Speed 8.5 samples/s	Data 0.334s (0.334s)	Loss 0.000787 (0.000787)	acc 0.722 (0.722)
+2024-11-21 10:00:01,260 Test: [0/2]	Time 0.723 (0.723)	Loss 0.00079 (0.00079)	acc 0.761 (0.761)
+2024-11-21 10:00:02,496 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:00:02,514 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:00:02,514 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:00:02,514 | pose_hrnet | 0.4276 | 1.0000 | 0.0000 | -1.0000 | 0.4276 | 0.4444 | 1.0000 | 0.0000 | -1.0000 | 0.4444 |
+2024-11-21 10:00:02,515 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:00:02,523 # Best AP 0.45
+2024-11-21 10:00:03,333 Epoch: [23][0/3]	Time 0.808s (0.808s)	Speed 9.9 samples/s	Data 0.337s (0.337s)	Loss 0.000731 (0.000731)	acc 0.756 (0.756)
+2024-11-21 10:00:06,248 Test: [0/2]	Time 0.795 (0.795)	Loss 0.00075 (0.00075)	acc 0.790 (0.790)
+2024-11-21 10:00:07,473 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:00:07,492 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:00:07,492 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:00:07,492 | pose_hrnet | 0.4653 | 1.0000 | 0.0000 | -1.0000 | 0.4653 | 0.4778 | 1.0000 | 0.0000 | -1.0000 | 0.4778 |
+2024-11-21 10:00:07,492 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:00:09,818 # Best AP 0.46533081879616534
+2024-11-21 10:00:10,700 Epoch: [24][0/3]	Time 0.878s (0.878s)	Speed 9.1 samples/s	Data 0.378s (0.378s)	Loss 0.000706 (0.000706)	acc 0.784 (0.784)
+2024-11-21 10:00:13,483 Test: [0/2]	Time 0.715 (0.715)	Loss 0.00070 (0.00070)	acc 0.830 (0.830)
+2024-11-21 10:00:14,678 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:00:14,696 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:00:14,696 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:00:14,696 | pose_hrnet | 0.5017 | 1.0000 | 0.0170 | -1.0000 | 0.5017 | 0.5111 | 1.0000 | 0.1111 | -1.0000 | 0.5111 |
+2024-11-21 10:00:14,696 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:00:17,159 # Best AP 0.5016973125884017
+2024-11-21 10:00:18,095 Epoch: [25][0/3]	Time 0.932s (0.932s)	Speed 8.6 samples/s	Data 0.375s (0.375s)	Loss 0.000656 (0.000656)	acc 0.864 (0.864)
+2024-11-21 10:00:20,866 Test: [0/2]	Time 0.688 (0.688)	Loss 0.00066 (0.00066)	acc 0.864 (0.864)
+2024-11-21 10:00:22,054 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:00:22,072 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:00:22,072 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:00:22,072 | pose_hrnet | 0.5373 | 1.0000 | 0.3729 | -1.0000 | 0.5373 | 0.5556 | 1.0000 | 0.5556 | -1.0000 | 0.5556 |
+2024-11-21 10:00:22,073 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:00:24,528 # Best AP 0.5372937293729373
+2024-11-21 10:00:25,356 Epoch: [26][0/3]	Time 0.824s (0.824s)	Speed 9.7 samples/s	Data 0.348s (0.348s)	Loss 0.000634 (0.000634)	acc 0.847 (0.847)
+2024-11-21 10:00:28,203 Test: [0/2]	Time 0.771 (0.771)	Loss 0.00062 (0.00062)	acc 0.881 (0.881)
+2024-11-21 10:00:29,384 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:00:29,402 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:00:29,402 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:00:29,402 | pose_hrnet | 0.5678 | 1.0000 | 0.6779 | -1.0000 | 0.5678 | 0.5778 | 1.0000 | 0.7778 | -1.0000 | 0.5778 |
+2024-11-21 10:00:29,402 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:00:31,848 # Best AP 0.5677887788778878
+2024-11-21 10:00:32,662 Epoch: [27][0/3]	Time 0.809s (0.809s)	Speed 9.9 samples/s	Data 0.344s (0.344s)	Loss 0.000563 (0.000563)	acc 0.892 (0.892)
+2024-11-21 10:00:35,422 Test: [0/2]	Time 0.682 (0.682)	Loss 0.00058 (0.00058)	acc 0.915 (0.915)
+2024-11-21 10:00:36,635 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:00:36,654 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:00:36,654 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:00:36,654 | pose_hrnet | 0.6057 | 1.0000 | 1.0000 | -1.0000 | 0.6057 | 0.6222 | 1.0000 | 1.0000 | -1.0000 | 0.6222 |
+2024-11-21 10:00:36,654 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:00:38,981 # Best AP 0.6056930693069307
+2024-11-21 10:00:39,831 Epoch: [28][0/3]	Time 0.845s (0.845s)	Speed 9.5 samples/s	Data 0.346s (0.346s)	Loss 0.000495 (0.000495)	acc 0.938 (0.938)
+2024-11-21 10:00:42,739 Test: [0/2]	Time 0.693 (0.693)	Loss 0.00055 (0.00055)	acc 0.926 (0.926)
+2024-11-21 10:00:43,955 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:00:43,975 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:00:43,975 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:00:43,975 | pose_hrnet | 0.6215 | 1.0000 | 1.0000 | -1.0000 | 0.6215 | 0.6556 | 1.0000 | 1.0000 | -1.0000 | 0.6556 |
+2024-11-21 10:00:43,975 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:00:46,295 # Best AP 0.6214992927864215
+2024-11-21 10:00:47,133 Epoch: [29][0/3]	Time 0.833s (0.833s)	Speed 9.6 samples/s	Data 0.349s (0.349s)	Loss 0.000525 (0.000525)	acc 0.864 (0.864)
+2024-11-21 10:00:49,960 Test: [0/2]	Time 0.697 (0.697)	Loss 0.00051 (0.00051)	acc 0.966 (0.966)
+2024-11-21 10:00:51,142 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:00:51,160 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:00:51,161 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:00:51,161 | pose_hrnet | 0.7107 | 1.0000 | 1.0000 | -1.0000 | 0.7107 | 0.7222 | 1.0000 | 1.0000 | -1.0000 | 0.7222 |
+2024-11-21 10:00:51,161 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:00:53,493 # Best AP 0.7107182146786107
+2024-11-21 10:00:54,413 Epoch: [30][0/3]	Time 0.915s (0.915s)	Speed 8.7 samples/s	Data 0.333s (0.333s)	Loss 0.000474 (0.000474)	acc 0.938 (0.938)
+2024-11-21 10:00:57,192 Test: [0/2]	Time 0.687 (0.687)	Loss 0.00049 (0.00049)	acc 0.989 (0.989)
+2024-11-21 10:00:58,392 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:00:58,411 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:00:58,411 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:00:58,411 | pose_hrnet | 0.7442 | 1.0000 | 1.0000 | -1.0000 | 0.7442 | 0.7667 | 1.0000 | 1.0000 | -1.0000 | 0.7667 |
+2024-11-21 10:00:58,411 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:01:00,752 # Best AP 0.7442244224422442
+2024-11-21 10:01:01,553 Epoch: [31][0/3]	Time 0.798s (0.798s)	Speed 10.0 samples/s	Data 0.307s (0.307s)	Loss 0.000452 (0.000452)	acc 0.943 (0.943)
+2024-11-21 10:01:04,341 Test: [0/2]	Time 0.689 (0.689)	Loss 0.00047 (0.00047)	acc 0.989 (0.989)
+2024-11-21 10:01:05,616 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:01:05,634 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:01:05,634 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:01:05,634 | pose_hrnet | 0.7833 | 1.0000 | 1.0000 | -1.0000 | 0.7833 | 0.7889 | 1.0000 | 1.0000 | -1.0000 | 0.7889 |
+2024-11-21 10:01:05,634 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:01:07,956 # Best AP 0.7832783278327833
+2024-11-21 10:01:08,849 Epoch: [32][0/3]	Time 0.888s (0.888s)	Speed 9.0 samples/s	Data 0.382s (0.382s)	Loss 0.000429 (0.000429)	acc 0.966 (0.966)
+2024-11-21 10:01:11,686 Test: [0/2]	Time 0.717 (0.717)	Loss 0.00045 (0.00045)	acc 0.989 (0.989)
+2024-11-21 10:01:12,900 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:01:12,919 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:01:12,919 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:01:12,919 | pose_hrnet | 0.7862 | 1.0000 | 1.0000 | -1.0000 | 0.7862 | 0.8000 | 1.0000 | 1.0000 | -1.0000 | 0.8000 |
+2024-11-21 10:01:12,919 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:01:15,266 # Best AP 0.7861857614332862
+2024-11-21 10:01:16,173 Epoch: [33][0/3]	Time 0.903s (0.903s)	Speed 8.9 samples/s	Data 0.392s (0.392s)	Loss 0.000415 (0.000415)	acc 0.966 (0.966)
+2024-11-21 10:01:19,174 Test: [0/2]	Time 0.758 (0.758)	Loss 0.00043 (0.00043)	acc 0.989 (0.989)
+2024-11-21 10:01:20,403 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:01:20,422 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:01:20,422 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:01:20,422 | pose_hrnet | 0.7848 | 1.0000 | 1.0000 | -1.0000 | 0.7848 | 0.8000 | 1.0000 | 1.0000 | -1.0000 | 0.8000 |
+2024-11-21 10:01:20,422 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:01:20,430 # Best AP 0.7861857614332862
+2024-11-21 10:01:21,254 Epoch: [34][0/3]	Time 0.822s (0.822s)	Speed 9.7 samples/s	Data 0.359s (0.359s)	Loss 0.000371 (0.000371)	acc 0.983 (0.983)
+2024-11-21 10:01:24,085 Test: [0/2]	Time 0.715 (0.715)	Loss 0.00041 (0.00041)	acc 0.989 (0.989)
+2024-11-21 10:01:25,284 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:01:25,303 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:01:25,303 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:01:25,303 | pose_hrnet | 0.8061 | 1.0000 | 1.0000 | -1.0000 | 0.8061 | 0.8222 | 1.0000 | 1.0000 | -1.0000 | 0.8222 |
+2024-11-21 10:01:25,304 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:01:27,678 # Best AP 0.8060506050605061
+2024-11-21 10:01:28,522 Epoch: [35][0/3]	Time 0.839s (0.839s)	Speed 9.5 samples/s	Data 0.342s (0.342s)	Loss 0.000389 (0.000389)	acc 0.949 (0.949)
+2024-11-21 10:01:31,384 Test: [0/2]	Time 0.701 (0.701)	Loss 0.00041 (0.00041)	acc 0.989 (0.989)
+2024-11-21 10:01:32,607 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:01:32,625 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:01:32,626 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:01:32,626 | pose_hrnet | 0.8344 | 1.0000 | 1.0000 | -1.0000 | 0.8344 | 0.8444 | 1.0000 | 1.0000 | -1.0000 | 0.8444 |
+2024-11-21 10:01:32,626 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:01:34,968 # Best AP 0.8344413012729843
+2024-11-21 10:01:35,915 Epoch: [36][0/3]	Time 0.942s (0.942s)	Speed 8.5 samples/s	Data 0.384s (0.384s)	Loss 0.000336 (0.000336)	acc 1.000 (1.000)
+2024-11-21 10:01:38,781 Test: [0/2]	Time 0.714 (0.714)	Loss 0.00037 (0.00037)	acc 0.994 (0.994)
+2024-11-21 10:01:40,020 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:01:40,039 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:01:40,039 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:01:40,039 | pose_hrnet | 0.8881 | 1.0000 | 1.0000 | -1.0000 | 0.8881 | 0.8889 | 1.0000 | 1.0000 | -1.0000 | 0.8889 |
+2024-11-21 10:01:40,039 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:01:42,492 # Best AP 0.8881188118811881
+2024-11-21 10:01:43,298 Epoch: [37][0/3]	Time 0.804s (0.804s)	Speed 10.0 samples/s	Data 0.333s (0.333s)	Loss 0.000309 (0.000309)	acc 0.994 (0.994)
+2024-11-21 10:01:46,250 Test: [0/2]	Time 0.733 (0.733)	Loss 0.00035 (0.00035)	acc 1.000 (1.000)
+2024-11-21 10:01:47,473 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:01:47,492 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:01:47,492 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:01:47,492 | pose_hrnet | 0.8881 | 1.0000 | 1.0000 | -1.0000 | 0.8881 | 0.8889 | 1.0000 | 1.0000 | -1.0000 | 0.8889 |
+2024-11-21 10:01:47,492 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:01:49,938 # Best AP 0.8881188118811881
+2024-11-21 10:01:50,825 Epoch: [38][0/3]	Time 0.883s (0.883s)	Speed 9.1 samples/s	Data 0.378s (0.378s)	Loss 0.000310 (0.000310)	acc 0.994 (0.994)
+2024-11-21 10:01:53,631 Test: [0/2]	Time 0.694 (0.694)	Loss 0.00033 (0.00033)	acc 1.000 (1.000)
+2024-11-21 10:01:54,854 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:01:54,873 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:01:54,873 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:01:54,873 | pose_hrnet | 0.8921 | 1.0000 | 1.0000 | -1.0000 | 0.8921 | 0.9000 | 1.0000 | 1.0000 | -1.0000 | 0.9000 |
+2024-11-21 10:01:54,873 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:01:57,403 # Best AP 0.8920792079207921
+2024-11-21 10:01:58,274 Epoch: [39][0/3]	Time 0.867s (0.867s)	Speed 9.2 samples/s	Data 0.377s (0.377s)	Loss 0.000291 (0.000291)	acc 1.000 (1.000)
+2024-11-21 10:02:01,080 Test: [0/2]	Time 0.696 (0.696)	Loss 0.00031 (0.00031)	acc 1.000 (1.000)
+2024-11-21 10:02:02,287 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:02:02,306 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:02:02,306 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:02:02,306 | pose_hrnet | 0.8946 | 1.0000 | 1.0000 | -1.0000 | 0.8946 | 0.9111 | 1.0000 | 1.0000 | -1.0000 | 0.9111 |
+2024-11-21 10:02:02,306 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:02:04,639 # Best AP 0.8946251768033946
+2024-11-21 10:02:05,613 Epoch: [40][0/3]	Time 0.969s (0.969s)	Speed 8.3 samples/s	Data 0.359s (0.359s)	Loss 0.000281 (0.000281)	acc 1.000 (1.000)
+2024-11-21 10:02:08,398 Test: [0/2]	Time 0.681 (0.681)	Loss 0.00030 (0.00030)	acc 1.000 (1.000)
+2024-11-21 10:02:09,614 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:02:09,633 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:02:09,633 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:02:09,633 | pose_hrnet | 0.9132 | 1.0000 | 1.0000 | -1.0000 | 0.9132 | 0.9333 | 1.0000 | 1.0000 | -1.0000 | 0.9333 |
+2024-11-21 10:02:09,633 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:02:11,972 # Best AP 0.9131930693069308
+2024-11-21 10:02:12,808 Epoch: [41][0/3]	Time 0.832s (0.832s)	Speed 9.6 samples/s	Data 0.344s (0.344s)	Loss 0.000274 (0.000274)	acc 1.000 (1.000)
+2024-11-21 10:02:15,712 Test: [0/2]	Time 0.707 (0.707)	Loss 0.00029 (0.00029)	acc 1.000 (1.000)
+2024-11-21 10:02:16,931 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:02:16,949 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:02:16,950 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:02:16,950 | pose_hrnet | 0.9391 | 1.0000 | 1.0000 | -1.0000 | 0.9391 | 0.9556 | 1.0000 | 1.0000 | -1.0000 | 0.9556 |
+2024-11-21 10:02:16,950 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:02:19,294 # Best AP 0.939108910891089
+2024-11-21 10:02:20,145 Epoch: [42][0/3]	Time 0.846s (0.846s)	Speed 9.5 samples/s	Data 0.374s (0.374s)	Loss 0.000227 (0.000227)	acc 1.000 (1.000)
+2024-11-21 10:02:23,040 Test: [0/2]	Time 0.801 (0.801)	Loss 0.00028 (0.00028)	acc 1.000 (1.000)
+2024-11-21 10:02:24,241 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:02:24,260 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:02:24,260 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:02:24,260 | pose_hrnet | 0.9144 | 1.0000 | 1.0000 | -1.0000 | 0.9144 | 0.9333 | 1.0000 | 1.0000 | -1.0000 | 0.9333 |
+2024-11-21 10:02:24,260 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:02:24,268 # Best AP 0.939108910891089
+2024-11-21 10:02:25,044 Epoch: [43][0/3]	Time 0.774s (0.774s)	Speed 10.3 samples/s	Data 0.315s (0.315s)	Loss 0.000220 (0.000220)	acc 1.000 (1.000)
+2024-11-21 10:02:27,839 Test: [0/2]	Time 0.688 (0.688)	Loss 0.00026 (0.00026)	acc 1.000 (1.000)
+2024-11-21 10:02:29,061 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:02:29,080 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:02:29,080 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:02:29,080 | pose_hrnet | 0.9223 | 1.0000 | 1.0000 | -1.0000 | 0.9223 | 0.9444 | 1.0000 | 1.0000 | -1.0000 | 0.9444 |
+2024-11-21 10:02:29,080 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:02:29,088 # Best AP 0.939108910891089
+2024-11-21 10:02:29,918 Epoch: [44][0/3]	Time 0.829s (0.829s)	Speed 9.7 samples/s	Data 0.356s (0.356s)	Loss 0.000232 (0.000232)	acc 1.000 (1.000)
+2024-11-21 10:02:32,852 Test: [0/2]	Time 0.714 (0.714)	Loss 0.00026 (0.00026)	acc 1.000 (1.000)
+2024-11-21 10:02:34,086 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:02:34,105 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:02:34,105 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:02:34,105 | pose_hrnet | 0.9586 | 1.0000 | 1.0000 | -1.0000 | 0.9586 | 0.9667 | 1.0000 | 1.0000 | -1.0000 | 0.9667 |
+2024-11-21 10:02:34,105 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:02:36,532 # Best AP 0.9585572842998585
+2024-11-21 10:02:37,376 Epoch: [45][0/3]	Time 0.840s (0.840s)	Speed 9.5 samples/s	Data 0.375s (0.375s)	Loss 0.000198 (0.000198)	acc 1.000 (1.000)
+2024-11-21 10:02:40,182 Test: [0/2]	Time 0.699 (0.699)	Loss 0.00025 (0.00025)	acc 1.000 (1.000)
+2024-11-21 10:02:41,406 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:02:41,425 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:02:41,425 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:02:41,425 | pose_hrnet | 0.9586 | 1.0000 | 1.0000 | -1.0000 | 0.9586 | 0.9667 | 1.0000 | 1.0000 | -1.0000 | 0.9667 |
+2024-11-21 10:02:41,425 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:02:43,881 # Best AP 0.9585572842998585
+2024-11-21 10:02:44,818 Epoch: [46][0/3]	Time 0.932s (0.932s)	Speed 8.6 samples/s	Data 0.345s (0.345s)	Loss 0.000185 (0.000185)	acc 1.000 (1.000)
+2024-11-21 10:02:47,627 Test: [0/2]	Time 0.707 (0.707)	Loss 0.00024 (0.00024)	acc 1.000 (1.000)
+2024-11-21 10:02:48,851 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:02:48,869 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:02:48,869 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:02:48,869 | pose_hrnet | 0.9601 | 1.0000 | 1.0000 | -1.0000 | 0.9601 | 0.9667 | 1.0000 | 1.0000 | -1.0000 | 0.9667 |
+2024-11-21 10:02:48,869 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:02:51,211 # Best AP 0.9601131541725602
+2024-11-21 10:02:52,106 Epoch: [47][0/3]	Time 0.890s (0.890s)	Speed 9.0 samples/s	Data 0.382s (0.382s)	Loss 0.000234 (0.000234)	acc 1.000 (1.000)
+2024-11-21 10:02:54,989 Test: [0/2]	Time 0.732 (0.732)	Loss 0.00023 (0.00023)	acc 1.000 (1.000)
+2024-11-21 10:02:56,221 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:02:56,240 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:02:56,240 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:02:56,240 | pose_hrnet | 0.9601 | 1.0000 | 1.0000 | -1.0000 | 0.9601 | 0.9667 | 1.0000 | 1.0000 | -1.0000 | 0.9667 |
+2024-11-21 10:02:56,241 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:02:58,646 # Best AP 0.9601131541725602
+2024-11-21 10:02:59,511 Epoch: [48][0/3]	Time 0.861s (0.861s)	Speed 9.3 samples/s	Data 0.347s (0.347s)	Loss 0.000177 (0.000177)	acc 1.000 (1.000)
+2024-11-21 10:03:02,330 Test: [0/2]	Time 0.690 (0.690)	Loss 0.00023 (0.00023)	acc 1.000 (1.000)
+2024-11-21 10:03:03,554 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:03:03,572 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:03:03,573 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:03:03,573 | pose_hrnet | 0.9686 | 1.0000 | 1.0000 | -1.0000 | 0.9686 | 0.9778 | 1.0000 | 1.0000 | -1.0000 | 0.9778 |
+2024-11-21 10:03:03,573 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:03:05,924 # Best AP 0.9685840012572685
+2024-11-21 10:03:06,768 Epoch: [49][0/3]	Time 0.839s (0.839s)	Speed 9.5 samples/s	Data 0.346s (0.346s)	Loss 0.000172 (0.000172)	acc 1.000 (1.000)
+2024-11-21 10:03:09,669 Test: [0/2]	Time 0.693 (0.693)	Loss 0.00022 (0.00022)	acc 1.000 (1.000)
+2024-11-21 10:03:10,898 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:03:10,917 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:03:10,917 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:03:10,917 | pose_hrnet | 0.9686 | 1.0000 | 1.0000 | -1.0000 | 0.9686 | 0.9778 | 1.0000 | 1.0000 | -1.0000 | 0.9778 |
+2024-11-21 10:03:10,917 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:03:13,229 # Best AP 0.9685840012572685
+2024-11-21 10:03:14,109 Epoch: [50][0/3]	Time 0.876s (0.876s)	Speed 9.1 samples/s	Data 0.371s (0.371s)	Loss 0.000174 (0.000174)	acc 1.000 (1.000)
+2024-11-21 10:03:16,899 Test: [0/2]	Time 0.665 (0.665)	Loss 0.00022 (0.00022)	acc 1.000 (1.000)
+2024-11-21 10:03:18,121 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:03:18,140 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:03:18,140 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:03:18,140 | pose_hrnet | 0.9686 | 1.0000 | 1.0000 | -1.0000 | 0.9686 | 0.9778 | 1.0000 | 1.0000 | -1.0000 | 0.9778 |
+2024-11-21 10:03:18,140 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:03:20,471 # Best AP 0.9685840012572685
+2024-11-21 10:03:21,334 Epoch: [51][0/3]	Time 0.858s (0.858s)	Speed 9.3 samples/s	Data 0.353s (0.353s)	Loss 0.000162 (0.000162)	acc 1.000 (1.000)
+2024-11-21 10:03:24,272 Test: [0/2]	Time 0.708 (0.708)	Loss 0.00021 (0.00021)	acc 1.000 (1.000)
+2024-11-21 10:03:25,514 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:03:25,533 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:03:25,533 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:03:25,533 | pose_hrnet | 0.9686 | 1.0000 | 1.0000 | -1.0000 | 0.9686 | 0.9778 | 1.0000 | 1.0000 | -1.0000 | 0.9778 |
+2024-11-21 10:03:25,533 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:03:27,888 # Best AP 0.9685840012572685
+2024-11-21 10:03:28,725 Epoch: [52][0/3]	Time 0.835s (0.835s)	Speed 9.6 samples/s	Data 0.365s (0.365s)	Loss 0.000153 (0.000153)	acc 1.000 (1.000)
+2024-11-21 10:03:31,735 Test: [0/2]	Time 0.734 (0.734)	Loss 0.00021 (0.00021)	acc 1.000 (1.000)
+2024-11-21 10:03:32,953 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:03:32,972 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:03:32,972 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:03:32,972 | pose_hrnet | 0.9686 | 1.0000 | 1.0000 | -1.0000 | 0.9686 | 0.9778 | 1.0000 | 1.0000 | -1.0000 | 0.9778 |
+2024-11-21 10:03:32,972 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:03:35,426 # Best AP 0.9685840012572685
+2024-11-21 10:03:36,250 Epoch: [53][0/3]	Time 0.819s (0.819s)	Speed 9.8 samples/s	Data 0.355s (0.355s)	Loss 0.000141 (0.000141)	acc 1.000 (1.000)
+2024-11-21 10:03:39,147 Test: [0/2]	Time 0.769 (0.769)	Loss 0.00021 (0.00021)	acc 1.000 (1.000)
+2024-11-21 10:03:40,399 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:03:40,418 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:03:40,418 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:03:40,418 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:03:40,419 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:03:42,956 # Best AP 1.0
+2024-11-21 10:03:43,855 Epoch: [54][0/3]	Time 0.895s (0.895s)	Speed 8.9 samples/s	Data 0.389s (0.389s)	Loss 0.000133 (0.000133)	acc 1.000 (1.000)
+2024-11-21 10:03:46,720 Test: [0/2]	Time 0.715 (0.715)	Loss 0.00020 (0.00020)	acc 1.000 (1.000)
+2024-11-21 10:03:47,940 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:03:47,959 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:03:47,959 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:03:47,959 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:03:47,959 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:03:50,359 # Best AP 1.0
+2024-11-21 10:03:51,169 Epoch: [55][0/3]	Time 0.805s (0.805s)	Speed 9.9 samples/s	Data 0.342s (0.342s)	Loss 0.000135 (0.000135)	acc 1.000 (1.000)
+2024-11-21 10:03:54,032 Test: [0/2]	Time 0.683 (0.683)	Loss 0.00019 (0.00019)	acc 1.000 (1.000)
+2024-11-21 10:03:55,200 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:03:55,219 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:03:55,219 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:03:55,219 | pose_hrnet | 0.9869 | 1.0000 | 1.0000 | -1.0000 | 0.9869 | 0.9889 | 1.0000 | 1.0000 | -1.0000 | 0.9889 |
+2024-11-21 10:03:55,219 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:03:55,227 # Best AP 1.0
+2024-11-21 10:03:56,054 Epoch: [56][0/3]	Time 0.825s (0.825s)	Speed 9.7 samples/s	Data 0.324s (0.324s)	Loss 0.000126 (0.000126)	acc 1.000 (1.000)
+2024-11-21 10:03:58,847 Test: [0/2]	Time 0.716 (0.716)	Loss 0.00019 (0.00019)	acc 1.000 (1.000)
+2024-11-21 10:04:00,028 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:04:00,046 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:04:00,046 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:04:00,046 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:04:00,046 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:04:02,500 # Best AP 1.0
+2024-11-21 10:04:03,382 Epoch: [57][0/3]	Time 0.877s (0.877s)	Speed 9.1 samples/s	Data 0.394s (0.394s)	Loss 0.000127 (0.000127)	acc 1.000 (1.000)
+2024-11-21 10:04:06,287 Test: [0/2]	Time 0.702 (0.702)	Loss 0.00018 (0.00018)	acc 1.000 (1.000)
+2024-11-21 10:04:07,484 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:04:07,502 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:04:07,502 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:04:07,502 | pose_hrnet | 0.9833 | 1.0000 | 1.0000 | -1.0000 | 0.9833 | 0.9889 | 1.0000 | 1.0000 | -1.0000 | 0.9889 |
+2024-11-21 10:04:07,502 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:04:07,514 # Best AP 1.0
+2024-11-21 10:04:08,341 Epoch: [58][0/3]	Time 0.825s (0.825s)	Speed 9.7 samples/s	Data 0.314s (0.314s)	Loss 0.000116 (0.000116)	acc 1.000 (1.000)
+2024-11-21 10:04:11,145 Test: [0/2]	Time 0.706 (0.706)	Loss 0.00018 (0.00018)	acc 1.000 (1.000)
+2024-11-21 10:04:12,355 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:04:12,374 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:04:12,374 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:04:12,374 | pose_hrnet | 0.9845 | 1.0000 | 1.0000 | -1.0000 | 0.9845 | 0.9889 | 1.0000 | 1.0000 | -1.0000 | 0.9889 |
+2024-11-21 10:04:12,374 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:04:12,382 # Best AP 1.0
+2024-11-21 10:04:13,254 Epoch: [59][0/3]	Time 0.870s (0.870s)	Speed 9.2 samples/s	Data 0.363s (0.363s)	Loss 0.000125 (0.000125)	acc 1.000 (1.000)
+2024-11-21 10:04:16,199 Test: [0/2]	Time 0.727 (0.727)	Loss 0.00019 (0.00019)	acc 1.000 (1.000)
+2024-11-21 10:04:17,409 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:04:17,427 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:04:17,427 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:04:17,427 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:04:17,427 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:04:19,737 # Best AP 1.0
+2024-11-21 10:04:20,623 Epoch: [60][0/3]	Time 0.882s (0.882s)	Speed 9.1 samples/s	Data 0.383s (0.383s)	Loss 0.000121 (0.000121)	acc 1.000 (1.000)
+2024-11-21 10:04:23,547 Test: [0/2]	Time 0.706 (0.706)	Loss 0.00019 (0.00019)	acc 1.000 (1.000)
+2024-11-21 10:04:24,777 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:04:24,796 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:04:24,796 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:04:24,796 | pose_hrnet | 0.9845 | 1.0000 | 1.0000 | -1.0000 | 0.9845 | 0.9889 | 1.0000 | 1.0000 | -1.0000 | 0.9889 |
+2024-11-21 10:04:24,797 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:04:24,805 # Best AP 1.0
+2024-11-21 10:04:25,646 Epoch: [61][0/3]	Time 0.839s (0.839s)	Speed 9.5 samples/s	Data 0.369s (0.369s)	Loss 0.000120 (0.000120)	acc 1.000 (1.000)
+2024-11-21 10:04:28,457 Test: [0/2]	Time 0.709 (0.709)	Loss 0.00018 (0.00018)	acc 1.000 (1.000)
+2024-11-21 10:04:29,673 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:04:29,692 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:04:29,692 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:04:29,692 | pose_hrnet | 0.9845 | 1.0000 | 1.0000 | -1.0000 | 0.9845 | 0.9889 | 1.0000 | 1.0000 | -1.0000 | 0.9889 |
+2024-11-21 10:04:29,692 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:04:29,700 # Best AP 1.0
+2024-11-21 10:04:30,519 Epoch: [62][0/3]	Time 0.818s (0.818s)	Speed 9.8 samples/s	Data 0.325s (0.325s)	Loss 0.000108 (0.000108)	acc 1.000 (1.000)
+2024-11-21 10:04:33,442 Test: [0/2]	Time 0.709 (0.709)	Loss 0.00018 (0.00018)	acc 1.000 (1.000)
+2024-11-21 10:04:34,654 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:04:34,673 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:04:34,673 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:04:34,673 | pose_hrnet | 0.9717 | 1.0000 | 1.0000 | -1.0000 | 0.9717 | 0.9778 | 1.0000 | 1.0000 | -1.0000 | 0.9778 |
+2024-11-21 10:04:34,673 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:04:34,681 # Best AP 1.0
+2024-11-21 10:04:35,482 Epoch: [63][0/3]	Time 0.800s (0.800s)	Speed 10.0 samples/s	Data 0.309s (0.309s)	Loss 0.000106 (0.000106)	acc 1.000 (1.000)
+2024-11-21 10:04:38,337 Test: [0/2]	Time 0.711 (0.711)	Loss 0.00018 (0.00018)	acc 1.000 (1.000)
+2024-11-21 10:04:39,567 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:04:39,586 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:04:39,586 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:04:39,586 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:04:39,586 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:04:42,036 # Best AP 1.0
+2024-11-21 10:04:42,969 Epoch: [64][0/3]	Time 0.928s (0.928s)	Speed 8.6 samples/s	Data 0.351s (0.351s)	Loss 0.000105 (0.000105)	acc 1.000 (1.000)
+2024-11-21 10:04:45,802 Test: [0/2]	Time 0.709 (0.709)	Loss 0.00017 (0.00017)	acc 1.000 (1.000)
+2024-11-21 10:04:47,042 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:04:47,060 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:04:47,060 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:04:47,060 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:04:47,061 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:04:49,515 # Best AP 1.0
+2024-11-21 10:04:50,366 Epoch: [65][0/3]	Time 0.847s (0.847s)	Speed 9.4 samples/s	Data 0.350s (0.350s)	Loss 0.000117 (0.000117)	acc 1.000 (1.000)
+2024-11-21 10:04:53,293 Test: [0/2]	Time 0.725 (0.725)	Loss 0.00017 (0.00017)	acc 1.000 (1.000)
+2024-11-21 10:04:54,478 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:04:54,496 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:04:54,496 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:04:54,496 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:04:54,496 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:04:56,804 # Best AP 1.0
+2024-11-21 10:04:57,680 Epoch: [66][0/3]	Time 0.872s (0.872s)	Speed 9.2 samples/s	Data 0.385s (0.385s)	Loss 0.000104 (0.000104)	acc 1.000 (1.000)
+2024-11-21 10:05:00,458 Test: [0/2]	Time 0.682 (0.682)	Loss 0.00017 (0.00017)	acc 1.000 (1.000)
+2024-11-21 10:05:01,744 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:05:01,762 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:05:01,762 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:05:01,762 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:05:01,763 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:05:04,092 # Best AP 1.0
+2024-11-21 10:05:04,934 Epoch: [67][0/3]	Time 0.838s (0.838s)	Speed 9.5 samples/s	Data 0.376s (0.376s)	Loss 0.000116 (0.000116)	acc 1.000 (1.000)
+2024-11-21 10:05:07,757 Test: [0/2]	Time 0.703 (0.703)	Loss 0.00018 (0.00018)	acc 1.000 (1.000)
+2024-11-21 10:05:09,004 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:05:09,022 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:05:09,023 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:05:09,023 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:05:09,023 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:05:11,347 # Best AP 1.0
+2024-11-21 10:05:12,197 Epoch: [68][0/3]	Time 0.845s (0.845s)	Speed 9.5 samples/s	Data 0.350s (0.350s)	Loss 0.000103 (0.000103)	acc 1.000 (1.000)
+2024-11-21 10:05:15,106 Test: [0/2]	Time 0.685 (0.685)	Loss 0.00016 (0.00016)	acc 1.000 (1.000)
+2024-11-21 10:05:16,313 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:05:16,332 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:05:16,332 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:05:16,332 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:05:16,333 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:05:18,663 # Best AP 1.0
+2024-11-21 10:05:19,505 Epoch: [69][0/3]	Time 0.837s (0.837s)	Speed 9.6 samples/s	Data 0.376s (0.376s)	Loss 0.000094 (0.000094)	acc 1.000 (1.000)
+2024-11-21 10:05:22,319 Test: [0/2]	Time 0.689 (0.689)	Loss 0.00016 (0.00016)	acc 1.000 (1.000)
+2024-11-21 10:05:23,557 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:05:23,576 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:05:23,576 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:05:23,576 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:05:23,576 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:05:25,914 # Best AP 1.0
+2024-11-21 10:05:26,848 Epoch: [70][0/3]	Time 0.930s (0.930s)	Speed 8.6 samples/s	Data 0.339s (0.339s)	Loss 0.000100 (0.000100)	acc 1.000 (1.000)
+2024-11-21 10:05:29,672 Test: [0/2]	Time 0.713 (0.713)	Loss 0.00016 (0.00016)	acc 1.000 (1.000)
+2024-11-21 10:05:30,893 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:05:30,912 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:05:30,912 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:05:30,912 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:05:30,912 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:05:33,215 # Best AP 1.0
+2024-11-21 10:05:34,099 Epoch: [71][0/3]	Time 0.879s (0.879s)	Speed 9.1 samples/s	Data 0.376s (0.376s)	Loss 0.000106 (0.000106)	acc 1.000 (1.000)
+2024-11-21 10:05:37,035 Test: [0/2]	Time 0.807 (0.807)	Loss 0.00016 (0.00016)	acc 1.000 (1.000)
+2024-11-21 10:05:38,239 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:05:38,257 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:05:38,257 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:05:38,257 | pose_hrnet | 0.9869 | 1.0000 | 1.0000 | -1.0000 | 0.9869 | 0.9889 | 1.0000 | 1.0000 | -1.0000 | 0.9889 |
+2024-11-21 10:05:38,258 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:05:38,266 # Best AP 1.0
+2024-11-21 10:05:39,096 Epoch: [72][0/3]	Time 0.828s (0.828s)	Speed 9.7 samples/s	Data 0.320s (0.320s)	Loss 0.000081 (0.000081)	acc 1.000 (1.000)
+2024-11-21 10:05:41,918 Test: [0/2]	Time 0.714 (0.714)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:05:43,101 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:05:43,119 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:05:43,120 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:05:43,120 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:05:43,120 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:05:45,446 # Best AP 1.0
+2024-11-21 10:05:46,318 Epoch: [73][0/3]	Time 0.868s (0.868s)	Speed 9.2 samples/s	Data 0.386s (0.386s)	Loss 0.000089 (0.000089)	acc 1.000 (1.000)
+2024-11-21 10:05:49,165 Test: [0/2]	Time 0.687 (0.687)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:05:50,363 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:05:50,382 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:05:50,382 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:05:50,382 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:05:50,382 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:05:52,721 # Best AP 1.0
+2024-11-21 10:05:53,543 Epoch: [74][0/3]	Time 0.818s (0.818s)	Speed 9.8 samples/s	Data 0.362s (0.362s)	Loss 0.000099 (0.000099)	acc 1.000 (1.000)
+2024-11-21 10:05:56,274 Test: [0/2]	Time 0.683 (0.683)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:05:57,493 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:05:57,511 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:05:57,511 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:05:57,511 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:05:57,512 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:05:59,968 # Best AP 1.0
+2024-11-21 10:06:00,861 Epoch: [75][0/3]	Time 0.889s (0.889s)	Speed 9.0 samples/s	Data 0.376s (0.376s)	Loss 0.000083 (0.000083)	acc 1.000 (1.000)
+2024-11-21 10:06:03,711 Test: [0/2]	Time 0.714 (0.714)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:06:04,938 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:06:04,957 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:06:04,957 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:06:04,957 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:06:04,957 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:06:07,386 # Best AP 1.0
+2024-11-21 10:06:08,213 Epoch: [76][0/3]	Time 0.822s (0.822s)	Speed 9.7 samples/s	Data 0.353s (0.353s)	Loss 0.000091 (0.000091)	acc 1.000 (1.000)
+2024-11-21 10:06:11,140 Test: [0/2]	Time 0.706 (0.706)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:06:12,299 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:06:12,317 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:06:12,317 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:06:12,317 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:06:12,318 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:06:14,762 # Best AP 1.0
+2024-11-21 10:06:15,639 Epoch: [77][0/3]	Time 0.872s (0.872s)	Speed 9.2 samples/s	Data 0.357s (0.357s)	Loss 0.000081 (0.000081)	acc 1.000 (1.000)
+2024-11-21 10:06:18,579 Test: [0/2]	Time 0.799 (0.799)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:06:19,801 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:06:19,819 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:06:19,819 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:06:19,819 | pose_hrnet | 0.9869 | 1.0000 | 1.0000 | -1.0000 | 0.9869 | 0.9889 | 1.0000 | 1.0000 | -1.0000 | 0.9889 |
+2024-11-21 10:06:19,820 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:06:19,827 # Best AP 1.0
+2024-11-21 10:06:20,649 Epoch: [78][0/3]	Time 0.820s (0.820s)	Speed 9.8 samples/s	Data 0.351s (0.351s)	Loss 0.000091 (0.000091)	acc 1.000 (1.000)
+2024-11-21 10:06:23,497 Test: [0/2]	Time 0.691 (0.691)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:06:24,741 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:06:24,760 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:06:24,760 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:06:24,760 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:06:24,761 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:06:27,208 # Best AP 1.0
+2024-11-21 10:06:28,011 Epoch: [79][0/3]	Time 0.800s (0.800s)	Speed 10.0 samples/s	Data 0.329s (0.329s)	Loss 0.000097 (0.000097)	acc 1.000 (1.000)
+2024-11-21 10:06:30,946 Test: [0/2]	Time 0.711 (0.711)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:06:32,185 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:06:32,204 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:06:32,204 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:06:32,204 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:06:32,204 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:06:34,654 # Best AP 1.0
+2024-11-21 10:06:35,527 Epoch: [80][0/3]	Time 0.868s (0.868s)	Speed 9.2 samples/s	Data 0.376s (0.376s)	Loss 0.000095 (0.000095)	acc 1.000 (1.000)
+2024-11-21 10:06:38,344 Test: [0/2]	Time 0.709 (0.709)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:06:39,692 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:06:39,710 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:06:39,711 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:06:39,711 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:06:39,711 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:06:42,131 # Best AP 1.0
+2024-11-21 10:06:43,008 Epoch: [81][0/3]	Time 0.872s (0.872s)	Speed 9.2 samples/s	Data 0.370s (0.370s)	Loss 0.000099 (0.000099)	acc 1.000 (1.000)
+2024-11-21 10:06:45,855 Test: [0/2]	Time 0.720 (0.720)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:06:47,062 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:06:47,080 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:06:47,080 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:06:47,080 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:06:47,080 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:06:49,415 # Best AP 1.0
+2024-11-21 10:06:50,306 Epoch: [82][0/3]	Time 0.886s (0.886s)	Speed 9.0 samples/s	Data 0.390s (0.390s)	Loss 0.000077 (0.000077)	acc 1.000 (1.000)
+2024-11-21 10:06:53,264 Test: [0/2]	Time 0.725 (0.725)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:06:54,493 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:06:54,512 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:06:54,512 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:06:54,512 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:06:54,513 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:06:56,846 # Best AP 1.0
+2024-11-21 10:06:57,721 Epoch: [83][0/3]	Time 0.871s (0.871s)	Speed 9.2 samples/s	Data 0.359s (0.359s)	Loss 0.000095 (0.000095)	acc 1.000 (1.000)
+2024-11-21 10:07:00,552 Test: [0/2]	Time 0.717 (0.717)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:07:01,779 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:07:01,798 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:07:01,798 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:07:01,798 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:07:01,798 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:07:04,128 # Best AP 1.0
+2024-11-21 10:07:05,097 Epoch: [84][0/3]	Time 0.964s (0.964s)	Speed 8.3 samples/s	Data 0.390s (0.390s)	Loss 0.000076 (0.000076)	acc 1.000 (1.000)
+2024-11-21 10:07:07,886 Test: [0/2]	Time 0.694 (0.694)	Loss 0.00014 (0.00014)	acc 1.000 (1.000)
+2024-11-21 10:07:09,105 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:07:09,124 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:07:09,124 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:07:09,125 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:07:09,125 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:07:11,458 # Best AP 1.0
+2024-11-21 10:07:12,305 Epoch: [85][0/3]	Time 0.842s (0.842s)	Speed 9.5 samples/s	Data 0.380s (0.380s)	Loss 0.000080 (0.000080)	acc 1.000 (1.000)
+2024-11-21 10:07:15,220 Test: [0/2]	Time 0.797 (0.797)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:07:16,455 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:07:16,474 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:07:16,474 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:07:16,474 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:07:16,475 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:07:18,779 # Best AP 1.0
+2024-11-21 10:07:19,691 Epoch: [86][0/3]	Time 0.907s (0.907s)	Speed 8.8 samples/s	Data 0.396s (0.396s)	Loss 0.000072 (0.000072)	acc 1.000 (1.000)
+2024-11-21 10:07:22,542 Test: [0/2]	Time 0.718 (0.718)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:07:23,762 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:07:23,780 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:07:23,780 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:07:23,781 | pose_hrnet | 0.9869 | 1.0000 | 1.0000 | -1.0000 | 0.9869 | 0.9889 | 1.0000 | 1.0000 | -1.0000 | 0.9889 |
+2024-11-21 10:07:23,781 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:07:23,789 # Best AP 1.0
+2024-11-21 10:07:24,620 Epoch: [87][0/3]	Time 0.830s (0.830s)	Speed 9.6 samples/s	Data 0.363s (0.363s)	Loss 0.000066 (0.000066)	acc 1.000 (1.000)
+2024-11-21 10:07:27,575 Test: [0/2]	Time 0.721 (0.721)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:07:28,800 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:07:28,818 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:07:28,818 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:07:28,818 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:07:28,819 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:07:31,153 # Best AP 1.0
+2024-11-21 10:07:31,999 Epoch: [88][0/3]	Time 0.841s (0.841s)	Speed 9.5 samples/s	Data 0.364s (0.364s)	Loss 0.000079 (0.000079)	acc 1.000 (1.000)
+2024-11-21 10:07:34,859 Test: [0/2]	Time 0.702 (0.702)	Loss 0.00014 (0.00014)	acc 1.000 (1.000)
+2024-11-21 10:07:36,104 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:07:36,124 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:07:36,124 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:07:36,124 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:07:36,124 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:07:38,536 # Best AP 1.0
+2024-11-21 10:07:39,365 Epoch: [89][0/3]	Time 0.824s (0.824s)	Speed 9.7 samples/s	Data 0.349s (0.349s)	Loss 0.000072 (0.000072)	acc 1.000 (1.000)
+2024-11-21 10:07:42,217 Test: [0/2]	Time 0.725 (0.725)	Loss 0.00014 (0.00014)	acc 1.000 (1.000)
+2024-11-21 10:07:43,448 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:07:43,467 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:07:43,467 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:07:43,467 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:07:43,468 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:07:45,808 # Best AP 1.0
+2024-11-21 10:07:46,682 Epoch: [90][0/3]	Time 0.870s (0.870s)	Speed 9.2 samples/s	Data 0.357s (0.357s)	Loss 0.000079 (0.000079)	acc 1.000 (1.000)
+2024-11-21 10:07:49,578 Test: [0/2]	Time 0.692 (0.692)	Loss 0.00014 (0.00014)	acc 1.000 (1.000)
+2024-11-21 10:07:50,823 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:07:50,842 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:07:50,842 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:07:50,842 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:07:50,843 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:07:53,271 # Best AP 1.0
+2024-11-21 10:07:54,146 Epoch: [91][0/3]	Time 0.870s (0.870s)	Speed 9.2 samples/s	Data 0.386s (0.386s)	Loss 0.000069 (0.000069)	acc 1.000 (1.000)
+2024-11-21 10:07:56,940 Test: [0/2]	Time 0.686 (0.686)	Loss 0.00014 (0.00014)	acc 1.000 (1.000)
+2024-11-21 10:07:58,284 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:07:58,302 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:07:58,303 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:07:58,303 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:07:58,303 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:08:00,761 # Best AP 1.0
+2024-11-21 10:08:01,607 Epoch: [92][0/3]	Time 0.841s (0.841s)	Speed 9.5 samples/s	Data 0.375s (0.375s)	Loss 0.000077 (0.000077)	acc 1.000 (1.000)
+2024-11-21 10:08:04,443 Test: [0/2]	Time 0.693 (0.693)	Loss 0.00014 (0.00014)	acc 1.000 (1.000)
+2024-11-21 10:08:05,667 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:08:05,685 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:08:05,685 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:08:05,686 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:08:05,686 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:08:08,137 # Best AP 1.0
+2024-11-21 10:08:09,035 Epoch: [93][0/3]	Time 0.894s (0.894s)	Speed 9.0 samples/s	Data 0.383s (0.383s)	Loss 0.000079 (0.000079)	acc 1.000 (1.000)
+2024-11-21 10:08:11,924 Test: [0/2]	Time 0.699 (0.699)	Loss 0.00014 (0.00014)	acc 1.000 (1.000)
+2024-11-21 10:08:13,089 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:08:13,107 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:08:13,107 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:08:13,107 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:08:13,107 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:08:15,441 # Best AP 1.0
+2024-11-21 10:08:16,268 Epoch: [94][0/3]	Time 0.822s (0.822s)	Speed 9.7 samples/s	Data 0.354s (0.354s)	Loss 0.000067 (0.000067)	acc 1.000 (1.000)
+2024-11-21 10:08:19,085 Test: [0/2]	Time 0.691 (0.691)	Loss 0.00015 (0.00015)	acc 1.000 (1.000)
+2024-11-21 10:08:20,311 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:08:20,330 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:08:20,330 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:08:20,330 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:08:20,330 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:08:22,677 # Best AP 1.0
+2024-11-21 10:08:23,615 Epoch: [95][0/3]	Time 0.933s (0.933s)	Speed 8.6 samples/s	Data 0.356s (0.356s)	Loss 0.000074 (0.000074)	acc 1.000 (1.000)
+2024-11-21 10:08:26,445 Test: [0/2]	Time 0.698 (0.698)	Loss 0.00014 (0.00014)	acc 1.000 (1.000)
+2024-11-21 10:08:27,686 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:08:27,705 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:08:27,705 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:08:27,705 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:08:27,706 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:08:30,007 # Best AP 1.0
+2024-11-21 10:08:30,898 Epoch: [96][0/3]	Time 0.887s (0.887s)	Speed 9.0 samples/s	Data 0.375s (0.375s)	Loss 0.000073 (0.000073)	acc 1.000 (1.000)
+2024-11-21 10:08:33,816 Test: [0/2]	Time 0.810 (0.810)	Loss 0.00014 (0.00014)	acc 1.000 (1.000)
+2024-11-21 10:08:35,068 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:08:35,086 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:08:35,086 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:08:35,086 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:08:35,087 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:08:37,412 # Best AP 1.0
+2024-11-21 10:08:38,248 Epoch: [97][0/3]	Time 0.832s (0.832s)	Speed 9.6 samples/s	Data 0.363s (0.363s)	Loss 0.000072 (0.000072)	acc 1.000 (1.000)
+2024-11-21 10:08:41,087 Test: [0/2]	Time 0.713 (0.713)	Loss 0.00014 (0.00014)	acc 1.000 (1.000)
+2024-11-21 10:08:42,330 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:08:42,349 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:08:42,350 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:08:42,350 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:08:42,350 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:08:44,680 # Best AP 1.0
+2024-11-21 10:08:45,587 Epoch: [98][0/3]	Time 0.902s (0.902s)	Speed 8.9 samples/s	Data 0.390s (0.390s)	Loss 0.000082 (0.000082)	acc 1.000 (1.000)
+2024-11-21 10:08:48,518 Test: [0/2]	Time 0.706 (0.706)	Loss 0.00014 (0.00014)	acc 1.000 (1.000)
+2024-11-21 10:08:49,742 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:08:49,761 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:08:49,761 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:08:49,761 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:08:49,761 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:08:52,089 # Best AP 1.0
+2024-11-21 10:08:52,927 Epoch: [99][0/3]	Time 0.833s (0.833s)	Speed 9.6 samples/s	Data 0.357s (0.357s)	Loss 0.000071 (0.000071)	acc 1.000 (1.000)
+2024-11-21 10:08:55,887 Test: [0/2]	Time 0.822 (0.822)	Loss 0.00013 (0.00013)	acc 1.000 (1.000)
+2024-11-21 10:08:57,128 => writing results json to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/results/keypoints_validation_results_0.json
+2024-11-21 10:08:57,147 | Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
+2024-11-21 10:08:57,147 |---|---|---|---|---|---|---|---|---|---|---|
+2024-11-21 10:08:57,147 | pose_hrnet | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | -1.0000 | 1.0000 |
+2024-11-21 10:08:57,147 => saving checkpoint to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57
+2024-11-21 10:08:59,600 # Best AP 1.0
+2024-11-21 10:08:59,600 => saving final model state to output/Auto/pose_hrnet/w48_384x288_adam_lr1e-3_front/2024-11-21-09-57/final_state.pth
