@@ -1,4 +1,4 @@
-# Airflow Keypoint Pipeline
+# Airflow, Mlflow Keypoint Detection Pipeline
 ![스크린샷 2024-11-21 오후 3 58 15](https://github.com/user-attachments/assets/37f79603-4e90-418f-b81c-190220e29221)
 
 Airflow와 Mlflow를 사용하여 Keypoint detection 자동화 파이프라인 모델 관리를 구현한 프로젝트입니다. 파이프라인은 데이터셋 생성, 실험 설정, 모델 훈련 단계로 구성되어 있습니다.
@@ -82,6 +82,8 @@ python train/main/train.py --cfg <config_file> MODEL.PRETRAINED <pretrained_mode
 ### 개요
 
 MLflow를 사용하여 keypoint detection 모델 버전 관리 및 기록
+![스크린샷 2024-11-27 오후 1 09 36](https://github.com/user-attachments/assets/89ae7a2b-2454-4253-ae17-f3ad8ee98258)
+
 
 ### 구성
 
@@ -101,7 +103,9 @@ MLflow를 사용하여 keypoint detection 모델 버전 관리 및 기록
     ```
     batch 단위로 loss 및 accuracy 평균 기록
     
-3. metric 기록
+3. 모델 저장
+
+    **http://203.252.147.200:8106/**
 
 -  가장 높은 AP를 가진 모델 저장
     ```python
