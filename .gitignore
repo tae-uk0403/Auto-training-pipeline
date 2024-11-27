@@ -1,4 +1,10 @@
-
-
+mlruns
 *.pth
 
+__pycache__/
+data
+output
+log
+
+
+.ipynb_checkpoints

@@ -25,6 +25,7 @@ import pprint
 import sys
 import json
 import pickle
+import mlflow
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +37,11 @@ def train(config, train_loader, train_dataset, model, criterion, optimizer, epoc
     data_time = AverageMeter()
     losses = AverageMeter()
     acc = AverageMeter()
+
+    # 에포크 손실 및 정확도 초기화
+    epoch_loss_sum = 0
+    epoch_acc_sum = 0
+    num_batches = len(train_loader)
 
     # switch to train mode
     model.train()
@@ -157,66 +163,83 @@ def train(config, train_loader, train_dataset, model, criterion, optimizer, epoc
         loss.backward()
         optimizer.step()
         losses.update(loss.item(), input.size(0))
+        epoch_loss_sum += loss.item()
 
-        _, avg_acc, cnt, pred = accuracy("train",output.detach().cpu().numpy(), 
-                                        target.detach().cpu().numpy(),
-                                        train_dataset.target_type)
+        _, avg_acc, cnt, pred = accuracy("train", output.detach().cpu().numpy(), 
+                                         target.detach().cpu().numpy(),
+                                         train_dataset.target_type)
 
         acc.update(avg_acc, cnt)
+        epoch_acc_sum += avg_acc
 
         # measure elapsed time
         batch_time.update(time.time() - end)
         end = time.time()
 
         # if config.PRINT_FREQ == 1:
-        if i % config.PRINT_FREQ == 0:
-            msg = 'Epoch: [{0}][{1}/{2}]\t' \
-                'Time {batch_time.val:.3f}s ({batch_time.avg:.3f}s)\t' \
-                'Speed {speed:.1f} samples/s\t' \
-                'Data {data_time.val:.3f}s ({data_time.avg:.3f}s)\t' \
-                'Loss {loss.val:.6f} ({loss.avg:.6f})\t' \
-                'acc {acc.val:.3f} ({acc.avg:.3f})'.format(
-                    epoch, i, len(train_loader), batch_time=batch_time,
-                    speed=input.size(0)/batch_time.val,
-                    data_time=data_time, loss=losses, acc=acc)
-            logger.info(msg)
+        # if i % config.PRINT_FREQ == 0:
+        msg = 'Epoch: [{0}][{1}/{2}]\t' \
+            'Time {batch_time.val:.3f}s ({batch_time.avg:.3f}s)\t' \
+            'Speed {speed:.1f} samples/s\t' \
+            'Data {data_time.val:.3f}s ({data_time.avg:.3f}s)\t' \
+            'Loss {loss.val:.6f} ({loss.avg:.6f})\t' \
+            'acc {acc.val:.3f} ({acc.avg:.3f})'.format(
+                epoch, i, len(train_loader), batch_time=batch_time,
+                speed=input.size(0)/batch_time.val,
+                data_time=data_time, loss=losses, acc=acc)
+        logger.info(msg)
 
-            writer = writer_dict['writer']
-            global_steps = writer_dict['train_global_steps']
-            writer.add_scalar('train_loss', losses.val, global_steps)
-            writer.add_scalar('train_acc', acc.val, global_steps)
-            writer_dict['train_global_steps'] = global_steps + 1
+        writer = writer_dict['writer']
+        global_steps = writer_dict['train_global_steps']
+        writer.add_scalar('train_loss', losses.val, global_steps)
+        writer.add_scalar('train_acc', acc.val, global_steps)
+        writer_dict['train_global_steps'] = global_steps + 1
 
-            prefix = '{}_{}'.format(os.path.join(output_dir, 'train'), i)
+        prefix = '{}_{}'.format(os.path.join(output_dir, 'train'), i)
 
-         #################################################
-            # print(meta.keys())
-            # print(meta['image'])
-            # pprint.pprint(meta['joints'])
-            #print("shape : ", meta['joints'].shape)
-            # #
-            # print("preds")
-            # pprint.pprint(preds)
-            # print("shape : ", preds.shape)
-            # #
-            # print("preds_local")
-            # pprint.pprint(preds_local)
-            # print("shape : ", preds_local.shape)
-            #
-            #
-            #sys.exit(0)
-           ###############################################################
+        #################################################
+        # print(meta.keys())
+        # print(meta['image'])
+        # pprint.pprint(meta['joints'])
+        #print("shape : ", meta['joints'].shape)
+        # #
+        # print("preds")
+        # pprint.pprint(preds)
+        # print("shape : ", preds.shape)
+        # #
+        # print("preds_local")
+        # pprint.pprint(preds_local)
+        # print("shape : ", preds_local.shape)
+        #
+        #
+        #sys.exit(0)
+        ###############################################################
 
-            save_debug_images(config, input, meta, target, preds_local, output, prefix)
-            # save_debug_images(config, input, meta, target, preds, output, prefix)
+        save_debug_images(config, input, meta, target, preds_local, output, prefix)
+        # save_debug_images(config, input, meta, target, preds, output, prefix)
+
+        # mlflow에 손실과 정확도 기록
+        mlflow.log_metric("train_loss", losses.val, step=epoch * len(train_loader) + i)
+        mlflow.log_metric("train_acc", acc.val, step=epoch * len(train_loader) + i)
+
+        # 배치 손실 누적
+        epoch_loss_sum += loss.item()
 
         
 #
 def validate(config, val_loader, val_dataset, model, criterion, output_dir,
-             tb_log_dir, writer_dict=None):
+             tb_log_dir, writer_dict=None, epoch=None):
+    if epoch is None:
+        raise ValueError("Epoch value must be provided to the validate function.")
+
     batch_time = AverageMeter()
     losses = AverageMeter()
     acc = AverageMeter()
+
+    # 에포크 손실 및 정확도 초기화
+    epoch_loss_sum = 0
+    epoch_acc_sum = 0
+    num_batches = len(val_loader)
 
     # switch to evaluate mode
     model.eval()
@@ -306,6 +329,10 @@ def validate(config, val_loader, val_dataset, model, criterion, output_dir,
                                         val_dataset.target_type)
             acc.update(avg_acc, cnt)
 
+            # mlflow에 손실과 정확도 기록
+            mlflow.log_metric("val_loss", losses.val, step=i)
+            mlflow.log_metric("val_acc", acc.val, step=i)
+
             # measure elapsed time
             batch_time.update(time.time() - end)
             end = time.time()
@@ -324,39 +351,34 @@ def validate(config, val_loader, val_dataset, model, criterion, output_dir,
 
             idx += num_images
 
-            # if config.PRINT_FREQ == 1:
-            if i % config.PRINT_FREQ == 0:
-                msg = 'Test: [{0}/{1}]\t' \
-                      'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t' \
-                      'Loss {loss.val:.5f} ({loss.avg:.5f})\t' \
-                      'acc {acc.val:.3f} ({acc.avg:.3f})'.format(
-                          i, len(val_loader), batch_time=batch_time,
-                          loss=losses, acc=acc)
-                logger.info(msg)
+            msg = 'Test: [{0}/{1}]\t' \
+                    'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t' \
+                    'Loss {loss.val:.5f} ({loss.avg:.5f})\t' \
+                    'acc {acc.val:.3f} ({acc.avg:.3f})'.format(
+                        i, len(val_loader), batch_time=batch_time,
+                        loss=losses, acc=acc)
+            logger.info(msg)
 
-                prefix = '{}_{}'.format(
-                    os.path.join(output_dir, 'val'), i
-                )
+            prefix = '{}_{}'.format(
+                os.path.join(output_dir, 'val'), i
+            )
 
-                # print(meta['image'])
-                # # # pprint.pprint(meta['joints'])
-                # print("shape : ", meta['joints'].shape)
-                # # # #
-                # print("preds")
-                # # # pprint.pprint(preds)
-                # print("shape : ", preds.shape)
-                # # # #
-                # print("preds_local")
-                # # # pprint.pprint(preds_local)
-                # print("shape : ", preds_local.shape)
-                # # #
-                # # #
-                # # sys.exit(0)
+            print("save validation")
+            save_debug_images(config, input, meta, target, preds_local, output, prefix)
 
-                print("save validation")
-                save_debug_images(config, input, meta, target, preds_local, output, prefix)
-                # save_debug_images(config, input, meta, target, preds, output, prefix)
+            # 손실 계산
+            loss = criterion(output, target, target_weight)
 
+            # 배치 손실 누적
+            epoch_loss_sum += loss.item()
+
+            # 정확도 계산
+            _, avg_acc, cnt, pred = accuracy("valid", output.detach().cpu().numpy(), 
+                                             target.detach().cpu().numpy(),
+                                             val_dataset.target_type)
+
+            # 배치 정확도 누적
+            epoch_acc_sum += avg_acc
 
         name_values, perf_indicator = val_dataset.evaluate(
             config, all_preds, output_dir, all_boxes, image_path,
@@ -384,19 +406,6 @@ def validate(config, val_loader, val_dataset, model, criterion, output_dir,
                 acc.avg,
                 global_steps
             )
-            # if isinstance(name_values, list):
-            #     for name_value in name_values:
-            #         writer.add_scalars(
-            #             'valid',
-            #             dict(name_value),
-            #             global_steps
-            #         )
-            # else:
-            #     writer.add_scalars(
-            #         'valid',
-            #         dict(name_values),
-            #         global_steps
-            #     )
             writer.add_scalar(
                 'valid_AP',
                 perf_indicator,
@@ -404,6 +413,15 @@ def validate(config, val_loader, val_dataset, model, criterion, output_dir,
             )
             
             writer_dict['valid_global_steps'] = global_steps + 1
+
+    # 에포크가 끝난 후 평균 손실 및 정확도 계산 및 출력
+    epoch_loss_avg = epoch_loss_sum / num_batches
+    epoch_acc_avg = epoch_acc_sum / num_batches
+    print(f'Epoch [{epoch+1}] Validation Average Loss: {epoch_loss_avg:.6f}, Average Accuracy: {epoch_acc_avg:.3f}')
+
+    # 에포크가 끝난 후 손실과 정확도 기록
+    mlflow.log_metric("epoch_val_loss", epoch_loss_sum / num_batches, step=epoch)
+    mlflow.log_metric("epoch_val_acc", epoch_acc_sum / num_batches, step=epoch)
 
     return perf_indicator
 

@@ -21,6 +21,8 @@ import torch.utils.data.distributed
 import torchvision.transforms as transforms
 # from tensorboardX import SummaryWriter
 from torch.utils.tensorboard import SummaryWriter
+import mlflow
+import mlflow.pytorch
 
 import _init_paths
 from config import cfg
@@ -211,46 +213,64 @@ def main():
     )
     logger.info("=> Start training...")
 
-    for epoch in range(begin_epoch, cfg.TRAIN.END_EPOCH):
-        lr_scheduler.step()
+    # MLflow experiment 설정
+    mlflow.set_experiment("keypoint_detection_whole_body")
 
-        # train for one epoch
-        train(cfg, train_loader, train_dataset, model, criterion, optimizer, epoch,
-              final_output_dir, tb_log_dir, writer_dict)
+    with mlflow.start_run():
+        # 하이퍼파라미터 기록
+        mlflow.log_param("learning_rate", cfg.TRAIN.LR)
+        mlflow.log_param("batch_size", train_batch_size)
+        # 필요한 다른 파라미터도 기록 가능
 
-        # torch.save(model.module.state_dict(), final_output_dir + '/epoch-%d.pth' % epoch)
+        for epoch in range(begin_epoch, cfg.TRAIN.END_EPOCH):
+            lr_scheduler.step()
 
-        # evaluate on validation set
-        perf_indicator = validate(
-            cfg, valid_loader, valid_dataset, model, criterion,
-            final_output_dir, tb_log_dir, writer_dict
+            # train for one epoch
+            train(cfg, train_loader, train_dataset, model, criterion, optimizer, epoch,
+                  final_output_dir, tb_log_dir, writer_dict)
+
+            # evaluate on validation set
+            perf_indicator = validate(
+                cfg, valid_loader, valid_dataset, model, criterion,
+                final_output_dir, tb_log_dir, writer_dict, epoch  # epoch 인자 전달
+            )
+
+            # 성능 지표 기록
+            mlflow.log_metric("performance", perf_indicator, step=epoch)
+
+            if perf_indicator >= best_perf:
+                best_perf = perf_indicator
+                best_model = True
+            else:
+                best_model = False
+
+            # 모델 저장
+            if best_model:
+                mlflow.pytorch.log_model(model, "best_model")
+
+            logger.info('=> saving checkpoint to {}'.format(final_output_dir))
+            save_checkpoint({
+                'epoch': epoch + 1,
+                'model': cfg.MODEL.NAME,
+                'state_dict': model.state_dict(),
+                'best_state_dict': model.module.state_dict(),
+                'perf': perf_indicator,
+                'optimizer': optimizer.state_dict(),
+            }, best_model, final_output_dir, f'epoch-{epoch}.pth')
+            logger.info('# Best AP {}'.format(best_perf))
+
+        # 최종 모델 상태 저장
+        final_model_state_file = os.path.join(
+            final_output_dir, 'final_state.pth'
         )
+        logger.info('=> saving final model state to {}'.format(
+            final_model_state_file)
+        )
+        torch.save(model.module.state_dict(), final_model_state_file)
+        writer_dict['writer'].close()
 
-        if perf_indicator >= best_perf:
-            best_perf = perf_indicator
-            best_model = True
-        else:
-            best_model = False
-
-        logger.info('=> saving checkpoint to {}'.format(final_output_dir))
-        save_checkpoint({
-            'epoch': epoch + 1,
-            'model': cfg.MODEL.NAME,
-            'state_dict': model.state_dict(),
-            'best_state_dict': model.module.state_dict(),
-            'perf': perf_indicator,
-            'optimizer': optimizer.state_dict(),
-        }, best_model, final_output_dir, f'epoch-{epoch}.pth')
-        logger.info('# Best AP {}'.format(best_perf))
-
-    final_model_state_file = os.path.join(
-        final_output_dir, 'final_state.pth'
-    )
-    logger.info('=> saving final model state to {}'.format(
-        final_model_state_file)
-    )
-    torch.save(model.module.state_dict(), final_model_state_file)
-    writer_dict['writer'].close()
+        # 최종 모델을 MLflow에 저장
+        mlflow.pytorch.log_model(model, "final_model")
 
 
 if __name__ == '__main__':

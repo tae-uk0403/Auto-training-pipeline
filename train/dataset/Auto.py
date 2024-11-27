@@ -62,7 +62,7 @@ class AutoDataset(JointsDataset):
         self.select_cat = cfg.DATASET.SELECT_CAT
         self.aspect_ratio = self.image_width * 1.0 / self.image_height
         self.pixel_std = 200
-        self.num_keypoints = cfg.DATASET.NUM_KEPOINTS
+        self.num_keypoints = cfg.DATASET.NUM_KEYPOINTS
         self.flip_fairs = cfg.DATASET.FLIP_FAIRS
 
         self.coco = COCO(self._get_ann_file_keypoint())
