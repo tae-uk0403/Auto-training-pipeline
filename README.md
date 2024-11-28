@@ -3,6 +3,9 @@
 
 Airflow와 Mlflow를 사용하여 Keypoint detection 자동화 파이프라인 모델 관리를 구현한 프로젝트입니다. 파이프라인은 데이터셋 생성, 실험 설정, 모델 훈련 단계로 구성되어 있습니다.
 
+- Airflow 서버 주소: **http://203.252.147.200:8105**
+- Mlflow 서버 주소: **http://203.252.147.200:8106**
+
 ## 프로젝트 구조
 
 - `train_pipeline.py`: 전체 파이프라인을 정의하는 Airflow DAG 파일
@@ -105,7 +108,6 @@ MLflow를 사용하여 keypoint detection 모델 버전 관리 및 기록
     
 3. 모델 저장
 
-    **http://203.252.147.200:8106/**
 
 -  가장 높은 AP를 가진 모델 저장
     ```python
