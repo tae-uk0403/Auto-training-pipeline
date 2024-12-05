@@ -30,7 +30,7 @@ with DAG('train_pipeline', default_args=default_args, schedule_interval=None) as
             'n': 2,
             'sc': 'body',
             'c': 'front',
-            'tp': 0.7
+            'tp': 0.7,
         }
     )
 

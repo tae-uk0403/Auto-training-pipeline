@@ -196,11 +196,21 @@ class AutoDataset(JointsDataset):
         # sanitize bboxes
         valid_objs = []
         for obj in objs:
-            x, y, w, h = obj['bbox']
+            # 이미지의 전체 너비와 높이를 가져옵니다.
+            width = im_ann['width']
+            height = im_ann['height']
+
+            # bbox를 이미지 전체로 설정합니다.
+            x, y, w, h = 0, 0, width, height
             x1 = np.max((0, x))
             y1 = np.max((0, y))
             x2 = np.min((width - 1, x1 + np.max((0, w - 1))))
             y2 = np.min((height - 1, y1 + np.max((0, h - 1))))
+            # x, y, w, h = obj['bbox']
+            # x1 = np.max((0, x))
+            # y1 = np.max((0, y))
+            # x2 = np.min((width - 1, x1 + np.max((0, w - 1))))
+            # y2 = np.min((height - 1, y1 + np.max((0, h - 1))))
             if obj['area'] > 0 and x2 >= x1 and y2 >= y1:
                 obj['clean_bbox'] = [x1, y1, x2-x1, y2-y1]
                 valid_objs.append(obj)

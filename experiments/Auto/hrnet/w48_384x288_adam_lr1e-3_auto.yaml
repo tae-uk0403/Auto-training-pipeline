@@ -7,37 +7,21 @@ DATASET:
   COLOR_RGB: true
   DATASET: Auto
   DATA_FORMAT: png
-  FLIP: false
+  FLIP: true
   FLIP_FAIRS:
   - - 1
-    - 4
-  - - 2
-    - 3
-  - - 5
-    - 7
-  - - 6
     - 8
-  - - 9
-    - 10
-  - - 11
-    - 12
-  - - 13
-    - 14
-  - - 15
-    - 16
-  - - 17
-    - 19
-  - - 18
-    - 19
-  - - 21
-    - 23
-  - - 22
-    - 24
+  - - 2
+    - 6
+  - - 3
+    - 7
+  - - 4
+    - 5
   MINI_DATASET: false
   NUM_JOINTS_HALF_BODY: 8
-  NUM_KEYPOINTS: 24
+  NUM_KEYPOINTS: 8
   PROB_HALF_BODY: 0.3
-  ROOT: data/front/
+  ROOT: data/front_upper/
   ROT_FACTOR: 15
   SCALE_FACTOR: 0.1
   SELECT_CAT:

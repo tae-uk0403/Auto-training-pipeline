@@ -217,8 +217,8 @@ def gen_coco_sty_json():
             with open(osp.join(dd, pn, "annos", annos_json), 'r') as f :
                 fj = json.load(f)
                 
-            img_box = fj["shapes"][0]["points"]
-            img_seg = fj["shapes"][1]["points"]
+            # img_box = fj["shapes"][0]["points"]
+            img_seg = fj["shapes"][0]["points"]
             img_file_name = fj['imagePath']
             img_height = fj['imageHeight']
             img_width = fj['imageWidth']
@@ -238,24 +238,9 @@ def gen_coco_sty_json():
 
             points = np.zeros(294 * 3)
             sub_index = int(img_file_name.replace(".jpg", ""))
-            
-            print(img_box)
+            bbox = [0, 0, img_width - 2, img_height - 2]
 
-            box_x_list = []
-            box_y_list = []
-            try:
-                for i in range(4):
-                    box_x_list.append(img_box[i][0])
-                    box_y_list.append(img_box[i][1])
-            except:
-                print(fj['imagePath'])
-            # w = img_box[2]-img_box[0]
-            # h = img_box[1]-img_box[3]
-            # x_1 = img_box[0]
-            # y_1 = img_box[1]
-            # bbox=[x_1,y_1,w,h]
 
-            bbox = [min(box_x_list), min(box_y_list), max(box_x_list)-min(box_x_list), max(box_y_list)-min(box_y_list)]
 
             cat = 1
             style = 1
@@ -340,7 +325,7 @@ def gen_coco_sty_json():
             num_points = len(np.where(points_v > 0)[0])
 
             dataset['annotations'].append({
-                # 'area': bbox[2] * bbox[3],
+                'area': bbox[2] * bbox[3],
                 'area': img_width * img_height,
                 'bbox': bbox,
                 'category_id': cat,
