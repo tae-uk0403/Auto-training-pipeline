@@ -1,5 +1,4 @@
-# Airflow, Mlflow Keypoint Detection Pipeline
-![스크린샷 2024-11-21 오후 3 58 15](https://github.com/user-attachments/assets/37f79603-4e90-418f-b81c-190220e29221)
+# Keypoint Detection Pipeline
 
 Airflow와 Mlflow를 사용하여 Keypoint detection 자동화 파이프라인 모델 관리를 구현한 프로젝트입니다. 파이프라인은 데이터셋 생성, 실험 설정, 모델 훈련 단계로 구성되어 있습니다.
 
