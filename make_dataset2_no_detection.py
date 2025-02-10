@@ -16,7 +16,6 @@ from tqdm import tqdm
 import random
 
 
-
 def img_ext_to_jpg(img_path, img_ext):
     img = Image.open(img_path)
     img = img.convert("RGB")
@@ -25,13 +24,19 @@ def img_ext_to_jpg(img_path, img_ext):
     print("")
     os.remove(img_path)
 
+
 def check_equal_img_json(data_dir, img_ext):
+    # 현재 작업 디렉토리 출력
+    print(f"Current working directory: {os.getcwd()}")
+
     img_files = glob(osp.join(data_dir, "*" + img_ext))
     json_files = glob(osp.join(data_dir, "*" + ".json"))
-    if len(img_files) != len(json_files) :
+    if len(img_files) != len(json_files):
         raise IndexError("number of images != number of json files")
-    else :
-        print(f'Found {len(img_files)} images in {data_dir} and {len(json_files)} json in {data_dir}')
+    else:
+        print(
+            f"Found {len(img_files)} images in {data_dir} and {len(json_files)} json in {data_dir}"
+        )
 
 
 def gen_coco_sty_json():
@@ -47,7 +52,6 @@ def gen_coco_sty_json():
 
     img_files = glob(osp.join(dd, "*" + ".jpg"))
 
-
     os.makedirs(osp.join(dd, "train", "image"), exist_ok=True)
     os.makedirs(osp.join(dd, "train", "annos"), exist_ok=True)
     os.makedirs(osp.join(dd, "validation", "image"), exist_ok=True)
@@ -61,30 +65,9 @@ def gen_coco_sty_json():
     for fi, img in enumerate(train_img_files):
 
         src_img = img
-        dst_img = osp.join(dd, "train", "image", str(fi+1).zfill(6) + ".jpg")
+        dst_img = osp.join(dd, "train", "image", str(fi + 1).zfill(6) + ".jpg")
         src_json = img.replace(".jpg", ".json")
-        dst_json = osp.join(dd, "train", "annos", str(fi+1).zfill(6) + ".json")
-
-        shutil.move(src_img, dst_img)
-        print(src_img, "==>", dst_img, sep="\n")
-        print("")
-        shutil.move(src_json, dst_json)
-        print(src_json, "==>", dst_json, sep="\n")
-        print("")
-
-        with open(dst_json, "r") as f__:
-            json_data = json.load(f__)
-        json_data["imagePath"] = str(fi+1).zfill(6) + ".jpg"
-
-        with open(dst_json, "w") as f_:
-            json.dump(json_data, f_)
-
-    for fi, img in enumerate(val_img_files):
-
-        src_img = img
-        dst_img = osp.join(dd, "validation", "image", str(fi+1).zfill(6) + ".jpg")
-        src_json = img.replace(".jpg", ".json")
-        dst_json = osp.join(dd, "validation", "annos", str(fi+1).zfill(6) + ".json")
+        dst_json = osp.join(dd, "train", "annos", str(fi + 1).zfill(6) + ".json")
 
         shutil.move(src_img, dst_img)
         print(src_img, "==>", dst_img, sep="\n")
@@ -100,147 +83,194 @@ def gen_coco_sty_json():
         with open(dst_json, "w") as f_:
             json.dump(json_data, f_)
 
+    for fi, img in enumerate(val_img_files):
+
+        src_img = img
+        dst_img = osp.join(dd, "validation", "image", str(fi + 1).zfill(6) + ".jpg")
+        src_json = img.replace(".jpg", ".json")
+        dst_json = osp.join(dd, "validation", "annos", str(fi + 1).zfill(6) + ".json")
+
+        shutil.move(src_img, dst_img)
+        print(src_img, "==>", dst_img, sep="\n")
+        print("")
+        shutil.move(src_json, dst_json)
+        print(src_json, "==>", dst_json, sep="\n")
+        print("")
+
+        with open(dst_json, "r") as f__:
+            json_data = json.load(f__)
+        json_data["imagePath"] = str(fi + 1).zfill(6) + ".jpg"
+
+        with open(dst_json, "w") as f_:
+            json.dump(json_data, f_)
 
     train_annos_json_list = os.listdir(osp.join(dd, "train", "annos"))
     val_annos_json_list = os.listdir(osp.join(dd, "validation", "annos"))
 
     for tv, annos_json_list in enumerate([train_annos_json_list, val_annos_json_list]):
-        if tv == 0 :
+        if tv == 0:
             pn = "train"
-        else :
+        else:
             pn = "validation"
 
         # print("annos_json_list : ", annos_json_list, sep="\n")
 
-
         dataset = {
-                "info": {},
-                "licenses": [],
-                "images": [],
-                "annotations": [],
-                "categories": []
-            }
-        
-        dataset['categories'].append({
-            'id': 1,
-            'name': c,
-            'supercategory': sc,
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
-        dataset['categories'].append({
-            'id': 2,
-            'name': "long_sleeved_shirt",
-            'supercategory': "clothes",
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
-        dataset['categories'].append({
-            'id': 3,
-            'name': "short_sleeved_outwear",
-            'supercategory': "clothes",
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
-        dataset['categories'].append({
-            'id': 4,
-            'name': "long_sleeved_outwear",
-            'supercategory': "clothes",
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
-        dataset['categories'].append({
-            'id': 5,
-            'name': "vest",
-            'supercategory': "clothes",
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
-        dataset['categories'].append({
-            'id': 6,
-            'name': "sling",
-            'supercategory': "clothes",
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
-        dataset['categories'].append({
-            'id': 7,
-            'name': "shorts",
-            'supercategory': "clothes",
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
-        dataset['categories'].append({
-            'id': 8,
-            'name': "trousers",
-            'supercategory': "clothes",
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
-        dataset['categories'].append({
-            'id': 9,
-            'name': "cow",
-            'supercategory': "clothes",
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
-        dataset['categories'].append({
-            'id': 10,
-            'name': "short_sleeved_dress",
-            'supercategory': "clothes",
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
-        dataset['categories'].append({
-            'id': 11,
-            'name': "long_sleeved_dress",
-            'supercategory': "clothes",
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
-        dataset['categories'].append({
-            'id': 12,
-            'name': "vest_dress",
-            'supercategory': "clothes",
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
-        dataset['categories'].append({
-            'id': 13,
-            'name': "sling_dress",
-            'supercategory': "clothes",
-            'keypoints': [str(x) for x in range(1, 295)],
-            'skeleton': []
-        })
+            "info": {},
+            "licenses": [],
+            "images": [],
+            "annotations": [],
+            "categories": [],
+        }
 
-        for annos_json in tqdm(annos_json_list, desc=f'Processing {pn} set', mininterval=0.01) :
-            with open(osp.join(dd, pn, "annos", annos_json), 'r') as f :
+        dataset["categories"].append(
+            {
+                "id": 1,
+                "name": c,
+                "supercategory": sc,
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+        dataset["categories"].append(
+            {
+                "id": 2,
+                "name": "long_sleeved_shirt",
+                "supercategory": "clothes",
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+        dataset["categories"].append(
+            {
+                "id": 3,
+                "name": "short_sleeved_outwear",
+                "supercategory": "clothes",
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+        dataset["categories"].append(
+            {
+                "id": 4,
+                "name": "long_sleeved_outwear",
+                "supercategory": "clothes",
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+        dataset["categories"].append(
+            {
+                "id": 5,
+                "name": "vest",
+                "supercategory": "clothes",
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+        dataset["categories"].append(
+            {
+                "id": 6,
+                "name": "sling",
+                "supercategory": "clothes",
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+        dataset["categories"].append(
+            {
+                "id": 7,
+                "name": "shorts",
+                "supercategory": "clothes",
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+        dataset["categories"].append(
+            {
+                "id": 8,
+                "name": "trousers",
+                "supercategory": "clothes",
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+        dataset["categories"].append(
+            {
+                "id": 9,
+                "name": "cow",
+                "supercategory": "clothes",
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+        dataset["categories"].append(
+            {
+                "id": 10,
+                "name": "short_sleeved_dress",
+                "supercategory": "clothes",
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+        dataset["categories"].append(
+            {
+                "id": 11,
+                "name": "long_sleeved_dress",
+                "supercategory": "clothes",
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+        dataset["categories"].append(
+            {
+                "id": 12,
+                "name": "vest_dress",
+                "supercategory": "clothes",
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+        dataset["categories"].append(
+            {
+                "id": 13,
+                "name": "sling_dress",
+                "supercategory": "clothes",
+                "keypoints": [str(x) for x in range(1, 295)],
+                "skeleton": [],
+            }
+        )
+
+        for annos_json in tqdm(
+            annos_json_list, desc=f"Processing {pn} set", mininterval=0.01
+        ):
+            with open(osp.join(dd, pn, "annos", annos_json), "r") as f:
                 fj = json.load(f)
-                
+
             # img_box = fj["shapes"][0]["points"]
             img_seg = fj["shapes"][0]["points"]
-            img_file_name = fj['imagePath']
-            img_height = fj['imageHeight']
-            img_width = fj['imageWidth']
+            img_file_name = fj["imagePath"]
+            img_height = fj["imageHeight"]
+            img_width = fj["imageWidth"]
 
             # print(img_file_name)
 
-            dataset['images'].append({
-                'coco_url': '',
-                'date_captured': '',
-                'file_name': img_file_name,
-                'flickr_url': '',
-                'id': int(img_file_name.replace(".jpg", "")),
-                'license': 0,
-                'width': img_width,
-                'height': img_height
-            })
+            dataset["images"].append(
+                {
+                    "coco_url": "",
+                    "date_captured": "",
+                    "file_name": img_file_name,
+                    "flickr_url": "",
+                    "id": int(img_file_name.replace(".jpg", "")),
+                    "license": 0,
+                    "width": img_width,
+                    "height": img_height,
+                }
+            )
 
             points = np.zeros(294 * 3)
             sub_index = int(img_file_name.replace(".jpg", ""))
             bbox = [0, 0, img_width - 2, img_height - 2]
-
-
 
             cat = 1
             style = 1
@@ -251,7 +281,7 @@ def gen_coco_sty_json():
 
             points_x = seg[0][0::2]
             points_y = seg[0][1::2]
-            points_v = [2]*num_p
+            points_v = [2] * num_p
             points_x = np.array(points_x)
             points_y = np.array(points_y)
             points_v = np.array(points_v)
@@ -262,12 +292,12 @@ def gen_coco_sty_json():
                     points[3 * n] = points_x[n]
                     points[3 * n + 1] = points_y[n]
                     points[3 * n + 2] = points_v[n]
-            elif cat ==2:
+            elif cat == 2:
                 for n in range(25, 58):
                     points[3 * n] = points_x[n - 25]
                     points[3 * n + 1] = points_y[n - 25]
                     points[3 * n + 2] = points_v[n - 25]
-            elif cat ==3:
+            elif cat == 3:
                 for n in range(58, 89):
                     points[3 * n] = points_x[n - 58]
                     points[3 * n + 1] = points_y[n - 58]
@@ -324,40 +354,51 @@ def gen_coco_sty_json():
                     points[3 * n + 2] = points_v[n - 275]
             num_points = len(np.where(points_v > 0)[0])
 
-            dataset['annotations'].append({
-                'area': bbox[2] * bbox[3],
-                'area': img_width * img_height,
-                'bbox': bbox,
-                'category_id': cat,
-                'id': sub_index,
-                'pair_id': 0,
-                'image_id': int(img_file_name.replace(".jpg", "")),
-                'iscrowd': 0,
-                'style': style,
-                'num_keypoints':num_points,
-                'keypoints':points.tolist(),
-                'segmentation': seg,
-            })
+            dataset["annotations"].append(
+                {
+                    "area": bbox[2] * bbox[3],
+                    "area": img_width * img_height,
+                    "bbox": bbox,
+                    "category_id": cat,
+                    "id": sub_index,
+                    "pair_id": 0,
+                    "image_id": int(img_file_name.replace(".jpg", "")),
+                    "iscrowd": 0,
+                    "style": style,
+                    "num_keypoints": num_points,
+                    "keypoints": points.tolist(),
+                    "segmentation": seg,
+                }
+            )
 
         if pn == "train":
             json_name = osp.join(dd, pn, pn + "-coco_style.json")
         else:
             json_name = osp.join(dd, pn, "val-coco_style.json")
-        with open(json_name, 'w') as fs:
+        with open(json_name, "w") as fs:
             json.dump(dataset, fs)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Create a dataset for Landmark Detection under data_dir")
+        description="Create a dataset for Landmark Detection under data_dir"
+    )
 
-    parser.add_argument('-d', '--data_dir', required=True,
-                        help='abs path of main data dir : /mnt/nas4/.../data/handbag')
-    parser.add_argument('-ext', '--img_ext', required=True, help='image file extension : jpg or png')
-    parser.add_argument('-n', '--num_points', required=True, help='number of keypoints')
-    parser.add_argument('-sc', '--supercategory', required=True, help='supercategory')
-    parser.add_argument('-c', '--category', required=True, help='category')
-    parser.add_argument('-tp', '--train_per', required=True, help='train percentage : ex 0.8')
+    parser.add_argument(
+        "-d",
+        "--data_dir",
+        required=True,
+        help="abs path of main data dir : /mnt/nas4/.../data/handbag",
+    )
+    parser.add_argument(
+        "-ext", "--img_ext", required=True, help="image file extension : jpg or png"
+    )
+    parser.add_argument("-n", "--num_points", required=True, help="number of keypoints")
+    parser.add_argument("-sc", "--supercategory", required=True, help="supercategory")
+    parser.add_argument("-c", "--category", required=True, help="category")
+    parser.add_argument(
+        "-tp", "--train_per", required=True, help="train percentage : ex 0.8"
+    )
 
     args = parser.parse_args()
 
