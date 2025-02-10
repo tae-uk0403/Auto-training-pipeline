@@ -1,0 +1,33 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pth
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Logs and output directories
+log/
+output/
+data/
+
+# Model files (if large and unnecessary in the image)
+models/
+mlruns/
+
+# Data files (exclude if data is provided externally)
+
+
+
+# Ignore Git metadata
+.git/
+.gitignore
+
+# Temporary files and system files
+*.swp
+*.tmp
+*.bak
+*.orig
+.DS_Store
