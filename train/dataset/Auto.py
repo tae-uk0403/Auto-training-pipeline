@@ -13,8 +13,9 @@ from collections import OrderedDict
 import logging
 import os
 
-from pycocotools.coco import COCO
-from pycocotools.cocoeval import COCOeval
+
+from .pycocotools.coco import COCO
+from .pycocotools.cocoeval import COCOeval
 import json_tricks as json
 import numpy as np
 
@@ -46,6 +47,7 @@ class AutoDataset(JointsDataset):
         13: (275, 294)
     },
     '''
+
     def __init__(self, cfg, root, image_set, is_train, transform=None):
         super().__init__(cfg, root, image_set, is_train, transform)
         self.nms_thre = cfg.TEST.NMS_THRE
@@ -89,24 +91,31 @@ class AutoDataset(JointsDataset):
 
         self.num_joints = 294
         self.gt_class_keypoints_dict = {1: (0, self.num_keypoints), 2: (25, 58), 3: (58, 89),
-                4: (89, 128), 5: (128, 143), 6: (143, 158), 7: (158, 168),
-                8: (168, 182), 9: (182, 190), 10: (190, 219),
-                11: (219, 256), 12: (256, 275), 13: (275, 294)}
+                                        4: (89, 128), 5: (128, 143), 6: (143, 158), 7: (158, 168),
+                                        8: (168, 182), 9: (182, 190), 10: (190, 219),
+                                        11: (219, 256), 12: (256, 275), 13: (275, 294)}
         print(self.flip_fairs)
         _flip_pairs = [
             self.flip_fairs,
-            [[2,6],[3,5],[7,33],[8,32],[9,31],[10,30],[11,29],[12,28],[13,27],[14,26],[15,25],[16,24],[17,23],[18,22],[19,21]],
-            [[2,26],[3,5],[4,6],[7,25],[8,24],[9,23],[10,22],[11,21],[12,20],[13,19],[14,18],[15,17],[16,29],[27,30],[28,31]],
-            [[2,6],[3,5],[4,34],[7,33],[8,32],[9,31],[10,30],[11,29],[12,28],[13,27],[14,26],[15,25],[16,24],[17,23],[18,22],[19,21],[20,37],[35,38],[36,39]],
-            [[2,6],[3,5],[7,15],[8,14],[9,13],[10,12]],
-            [[2,6],[3,5],[7,15],[8,14],[9,13],[10,12]],
-            [[1,3],[4,10],[5,9],[6,8]],
-            [[1,3],[4,14],[5,13],[6,12],[7,11],[8,10]],
-            [[1,3],[4,8],[5,7]],
-            [[2,6],[3,5],[7,29],[8,28],[9,27],[10,26],[11,25],[12,24],[13,23],[14,22],[15,21],[16,20],[17,19]],
-            [[2,6],[3,5],[7,37],[8,36],[9,35],[10,34],[11,33],[12,32],[13,31],[14,30],[15,29],[16,28],[17,27],[18,26],[19,25],[20,24],[21,23]],
-            [[2,6],[3,5],[7,19],[8,18],[9,17],[10,16],[11,15],[12,14]],
-            [[2,6],[3,5],[7,19],[8,18],[9,17],[10,16],[11,15],[12,14]]
+            [[2, 6], [3, 5], [7, 33], [8, 32], [9, 31], [10, 30], [11, 29], [12, 28], [
+                13, 27], [14, 26], [15, 25], [16, 24], [17, 23], [18, 22], [19, 21]],
+            [[2, 26], [3, 5], [4, 6], [7, 25], [8, 24], [9, 23], [10, 22], [11, 21], [
+                12, 20], [13, 19], [14, 18], [15, 17], [16, 29], [27, 30], [28, 31]],
+            [[2, 6], [3, 5], [4, 34], [7, 33], [8, 32], [9, 31], [10, 30], [11, 29], [12, 28], [13, 27], [
+                14, 26], [15, 25], [16, 24], [17, 23], [18, 22], [19, 21], [20, 37], [35, 38], [36, 39]],
+            [[2, 6], [3, 5], [7, 15], [8, 14], [9, 13], [10, 12]],
+            [[2, 6], [3, 5], [7, 15], [8, 14], [9, 13], [10, 12]],
+            [[1, 3], [4, 10], [5, 9], [6, 8]],
+            [[1, 3], [4, 14], [5, 13], [6, 12], [7, 11], [8, 10]],
+            [[1, 3], [4, 8], [5, 7]],
+            [[2, 6], [3, 5], [7, 29], [8, 28], [9, 27], [10, 26], [11, 25],
+                [12, 24], [13, 23], [14, 22], [15, 21], [16, 20], [17, 19]],
+            [[2, 6], [3, 5], [7, 37], [8, 36], [9, 35], [10, 34], [11, 33], [12, 32], [13, 31], [
+                14, 30], [15, 29], [16, 28], [17, 27], [18, 26], [19, 25], [20, 24], [21, 23]],
+            [[2, 6], [3, 5], [7, 19], [8, 18], [
+                9, 17], [10, 16], [11, 15], [12, 14]],
+            [[2, 6], [3, 5], [7, 19], [8, 18], [
+                9, 17], [10, 16], [11, 15], [12, 14]]
         ]
         self.flip_pairs = []
         for idx, _cat_pairs in enumerate(_flip_pairs):
@@ -115,20 +124,20 @@ class AutoDataset(JointsDataset):
             for pair in _cat_pairs:
                 x0 = pair[0] + start_idx - 1
                 x1 = pair[1] + start_idx - 1
-                cat_pairs.append([x0,x1])
+                cat_pairs.append([x0, x1])
             self.flip_pairs.append(cat_pairs)
-        
+
         self.parent_ids = None
 
         self.joints_weight = np.ones((self.num_joints, 1), dtype=np.float32
-                                    ).reshape((self.num_joints, 1))
+                                     ).reshape((self.num_joints, 1))
 
         print('Generating samples...')
         tic = time.time()
         self.cls_stat = np.array([0 for i in range(self.num_classes)])
         self.sample_list_of_cls = []
         self.db = self._get_db()
-        print('Done (t={:0.2f}s)'.format(time.time()- tic))
+        print('Done (t={:0.2f}s)'.format(time.time() - tic))
 
         if is_train and cfg.DATASET.SELECT_DATA:
             self.db = self.select_data(self.db)
@@ -136,19 +145,19 @@ class AutoDataset(JointsDataset):
         logger.info('=> load {} samples'.format(len(self.db)))
 
     def _get_ann_file_keypoint(self):
-        if 'train'  in self.image_set:
+        if 'train' in self.image_set:
             directory = self.image_set
             if self.mini_dataset:
                 return os.path.join(self.root, directory, 'train-coco_style-32.json')
             else:
                 return os.path.join(self.root, directory, 'train-coco_style.json')
-        elif 'validation'  in self.image_set:
+        elif 'validation' in self.image_set:
             directory = self.image_set
             if self.mini_dataset:
                 return os.path.join(self.root, directory, 'val-coco_style-64.json')
             else:
                 return os.path.join(self.root, directory, 'val-coco_style.json')
-        elif 'test'  in self.image_set:
+        elif 'test' in self.image_set:
             directory = 'json_for_test'
             return os.path.join(self.root, directory, 'keypoints_test_information.json')
         else:
@@ -248,7 +257,7 @@ class AutoDataset(JointsDataset):
                 'joints_3d_vis': joints_3d_vis,
                 'filename': '',
                 'imgnum': 0,
-                'category_id':obj['category_id'],
+                'category_id': obj['category_id'],
                 'area': obj['area']
             })
         print("rec is : ", rec)
@@ -325,7 +334,8 @@ class AutoDataset(JointsDataset):
                     'joints_3d_vis': joints_3d_vis,
                 })
         elif bbox_file_type == 'pkl':
-            logger.info("Loading detection results from %s ..." % self.bbox_file)
+            logger.info("Loading detection results from %s ..." %
+                        self.bbox_file)
             import pickle
             with open(self.bbox_file, 'rb') as f:
                 raw_data = pickle.load(f)
@@ -389,7 +399,6 @@ class AutoDataset(JointsDataset):
                         box['category_id'] = i + 1
                     all_boxes.append(box)
         return all_boxes
-
 
     def evaluate(self, cfg, preds, output_dir, all_boxes, img_path,
                  *args, **kwargs):
@@ -463,7 +472,8 @@ class AutoDataset(JointsDataset):
                 oks_nmsed_kpts.append([img_kpts[_keep] for _keep in keep])
 
         # self._write_coco_keypoint_results(oks_nmsed_kpts, res_file)
-        self._write_coco_keypoint_results_DeepFashion2(oks_nmsed_kpts, res_file)
+        self._write_coco_keypoint_results_DeepFashion2(
+            oks_nmsed_kpts, res_file)
         if 'test' not in self.image_set:
             info_str = self._do_python_keypoint_eval(
                 res_file, res_folder)
@@ -471,7 +481,6 @@ class AutoDataset(JointsDataset):
             return name_value, name_value['AP']
         else:
             return {'Null': 0}, 0
-
 
     def _write_coco_keypoint_results_DeepFashion2(self, keypoints, res_file):
         results = self._coco_keypoint_results_all_category_kernel(keypoints)
@@ -489,7 +498,7 @@ class AutoDataset(JointsDataset):
             with open(res_file, 'w') as f:
                 for c in content:
                     f.write(c)
-    
+
     def _coco_keypoint_results_all_category_kernel(self, keypoints):
         # cat_id = data_pack['cat_id']
 
@@ -514,7 +523,8 @@ class AutoDataset(JointsDataset):
                 for ipt in range(self.num_joints):
                     key_points[:, ipt * 3 + 0] = _key_points[:, ipt, 0]
                     key_points[:, ipt * 3 + 1] = _key_points[:, ipt, 1]
-                    key_points[:, ipt * 3 + 2] = _key_points[:, ipt, 2]  # keypoints score.
+                    # keypoints score.
+                    key_points[:, ipt * 3 + 2] = _key_points[:, ipt, 2]
 
                 result = [
                     {
@@ -550,7 +560,8 @@ class AutoDataset(JointsDataset):
     def _do_python_keypoint_eval(self, res_file, res_folder):
         coco_dt = self.coco.loadRes(res_file)
         coco_eval = COCOeval(self.coco, coco_dt, 'keypoints')
-        print('\n', f' ********** [({1}) : {self.classes[1]}] SCORE ********** ')
+        print(
+            '\n', f' ********** [({1}) : {self.classes[1]}] SCORE ********** ')
         coco_eval.params.catIds = [1]
         coco_eval.params.useSegm = None
         coco_eval.evaluate()
@@ -573,21 +584,22 @@ class AutoDataset(JointsDataset):
         # coco_eval.evaluate()
         # coco_eval.accumulate()
         # coco_eval.summarize()
-    
-        stats_names = ['AP', 'Ap .5', 'AP .75', 'AP (M)', 'AP (L)', 'AR', 'AR .5', 'AR .75', 'AR (M)', 'AR (L)']
-    
+
+        stats_names = ['AP', 'Ap .5', 'AP .75',
+                       'AP (M)', 'AP (L)', 'AR', 'AR .5', 'AR .75', 'AR (M)', 'AR (L)']
+
         info_str = []
         for ind, name in enumerate(stats_names):
             info_str.append((name, coco_eval.stats[ind]))
-    
+
         return info_str
-    
+
     def get_channel_index(self, class_id):
-        gt_class_keypoints_dict =  {
+        gt_class_keypoints_dict = {
             1: (0, 4), 2: (25, 58), 3: (58, 89), 4: (89, 128), 5: (128, 143),
             6: (143, 158), 7: (158, 168), 8: (168, 182), 9: (182, 190),
             10: (190, 219), 11: (219, 256), 12: (256, 275), 13: (275, 294)}
-        
+
         if isinstance(class_id, int):
             return list(range(gt_class_keypoints_dict[class_id]))
         elif isinstance(class_id, list):
@@ -630,7 +642,8 @@ class AutoDataset(JointsDataset):
                 y = x[:, np.newaxis]
                 x0 = y0 = size // 2
                 # The gaussian is not normalized, we want the center value to equal 1
-                g = np.exp(- ((x - x0) ** 2 + (y - y0) ** 2) / (2 * self.sigma ** 2))
+                g = np.exp(- ((x - x0) ** 2 + (y - y0) ** 2) /
+                           (2 * self.sigma ** 2))
 
                 # Usable gaussian range
                 g_x = max(0, -ul[0]), min(br[0], self.heatmap_size[0]) - ul[0]
@@ -647,7 +660,8 @@ class AutoDataset(JointsDataset):
             target = joints[:, 0:2]
             target /= feat_stride
         else:
-            raise NotImplementedError('Only support gaussian map and coordinate now!')
+            raise NotImplementedError(
+                'Only support gaussian map and coordinate now!')
 
         if self.use_different_joints_weight:
             target_weight = np.multiply(target_weight, self.joints_weight)
